@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package entity;
 
 
@@ -10,10 +6,7 @@ import accessBD.OfferDAO;
 import java.util.Vector;
 import javax.naming.NamingException;
 
-/**
- *
- * @author Tofi
- */
+
 public class Book {
 
     // creation des variables
@@ -28,7 +21,6 @@ public class Book {
     private String booFrontCover;
     private int booPageNumber;
     private Offer currentOffer;
-
     private Vector<Author> authorList;
     private Vector<SubTheme> subThemeList;
     private Vector<Offer> offerList;
