@@ -2,6 +2,7 @@
 package process;
 
 import accessBD.BookDAO;
+import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
 import entity.Book;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -16,10 +17,7 @@ public class GestionLivre implements Serializable{
     private BookDAO bookDAO;
     
     private List<String> clefs;
-    
-    private Book book;
-    
-    
+
     
     public GestionLivre() throws NamingException {
         bookDAO = new BookDAO();
@@ -34,22 +32,7 @@ public class GestionLivre implements Serializable{
         clefs.add("S-V");
         clefs.add("W-Z");
     }
-    
-    
-//    public bookPage() throws NamingException {
-//        
-//        bookDAO = new BookDAO();
-//        book = new Book();
-//        
-//        book.setBooTitle(null);
-//        
-//        
-//        return book;
-//    }
-    
-    
-    
-    
+     
     
      public HashMap<String, List<Book>> findBook() throws SQLException{
         List<Book> lp = bookDAO.findAll();
@@ -71,8 +54,22 @@ public class GestionLivre implements Serializable{
         return mp;
     }
     
+     
+       public HashMap<String, List<Book>> bookPage() throws SQLException {
+        
+        List<Book> listBook = bookDAO.find();
+        HashMap<String, List<Book>> hMapBook = new HashMap<>();
+      
+        for (Book b : listBook) {
+            String titre = b.getBooTitle();         
+        }
+        return hMapBook;
+    }
+         
     public List<String> getClefs(){
         return clefs;
     }
+    
+    
     
 }

@@ -67,19 +67,16 @@ public class ControllerMain extends HttpServlet {
             page = "/WEB-INF/catalog.jsp";
         }
         
+          //                                 Bouton Book                                          //
         
-        
-        
-        
-        
-        
+         if("book".equals(section)){            
+            page = "/WEB-INF/book.jsp";    
+        }
         
         
        
         
-        /*if ("book".equals(section)) {
-            page = "/WEB-INF/includes/book.jsp";
-        }
+        /*
         
         
         if(getServletContext().getAttribute("gestionLivre") == null){
