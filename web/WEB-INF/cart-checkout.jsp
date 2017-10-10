@@ -1,23 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-
-<%-- header--%>
 <%@include file="includes/header.jsp" %>
-
-<%-- navigator --%>
 <%@include file="includes/navigator.jsp" %>
 
-<%-- body --%>
 
-<c:url value="ControllerMain?page=carousel-event" var="url01" />
-<c:import url="${url01}" />
+<h2>Hello Panier !</h2>
+
+<hr>
+
+Titre
+Auteur
 
 
-<%-- footer --%>
+
+<hr>
+
+
 <%@include file="includes/footer.jsp" %>
-
-
-
-
 

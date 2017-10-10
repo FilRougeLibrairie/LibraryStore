@@ -4,8 +4,8 @@
 
 <!--  -->
 
-<c:url value="ControllerMain?section=home" var="url100" />
-<c:url value="ControllerMain?section=catalog" var="url101" />
+<c:url value="ControllerMain?page=home" var="url100" />
+<c:url value="ControllerMain?page=catalog" var="url101" />
 
 
 
