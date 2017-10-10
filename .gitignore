@@ -22,7 +22,6 @@
 **/build/
 **/dist/
 **/private/
-*.properties
 build.xml
 
 nbproject/private/
