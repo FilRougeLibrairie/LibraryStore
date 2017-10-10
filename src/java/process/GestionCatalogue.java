@@ -50,7 +50,7 @@ public class GestionCatalogue implements Serializable {
         return mp;
     }
     
-    public List<String> getClefs(){
+    public List<String> getKeys(){
         return keys;
     }
     

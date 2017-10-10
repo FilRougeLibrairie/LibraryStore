@@ -71,7 +71,7 @@ public class ControllerMain extends HttpServlet {
             page = "/WEB-INF/catalog.jsp";
         }
         
-<<<<<<< HEAD
+
         
         //                                 Bouton monCompte                                          //
         
@@ -91,18 +91,10 @@ public class ControllerMain extends HttpServlet {
         
         
         
-       
-        
-        /*if ("book".equals(section)) {
-            page = "/WEB-INF/includes/book.jsp";
-        }
-        
-        
-        if(getServletContext().getAttribute("gestionLivre") == null){
-=======
+      
                                     //      Sous Bouton Catalogue         //
         if(getServletContext().getAttribute("gestionCatalogue") == null){
->>>>>>> master
+
             try {
                 getServletContext().setAttribute("gestionCatalogue", new GestionCatalogue());
             } catch (NamingException ex) {
@@ -110,11 +102,24 @@ public class ControllerMain extends HttpServlet {
                 ex.printStackTrace();
             }
         }
+        
+        
+        if("bisou".equals(section)){
+            page="/WEB-INF/includes/navigator.jsp";
+        }
+        
+        
+        
+        
         GestionCatalogue gCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
+        
+        
         if("menuCatalog".equals(section)){
             
-            List<String> clefs = gCatalog.getClefs();
-            request.setAttribute("clefs", clefs);
+            List<String> keys = gCatalog.getKeys();
+            request.setAttribute("keys", keys);
+            page="/WEB-INF/bisou.jsp";
+            
         }
         
         
