@@ -43,9 +43,9 @@ public class ControllerMain extends HttpServlet {
 
        
         
-        //--------------------------------------------------------------------------------------//
-        //                                      HOME                                            //
-        //--------------------------------------------------------------------------------------//
+        //------------------------------------------------------------------------------------//
+        //                                      HOME                                          //
+        //------------------------------------------------------------------------------------//
         
         if("carousel-event".equals(section)){            
             page = "/WEB-INF/includes/carouselEvent.jsp";
@@ -53,19 +53,19 @@ public class ControllerMain extends HttpServlet {
         
         
         
-        //--------------------------------------------------------------------------------------//
-        //                               CONTROLEUR NAVIGATOR                                   //
-        //--------------------------------------------------------------------------------------//
+        //------------------------------------------------------------------------------------//
+        //                               CONTROLEUR NAVIGATOR                                 //
+        //------------------------------------------------------------------------------------//
         
         
-        //                                 Bouton Home                                          //
+        //                                 Bouton Home                                        //
         
         if("home".equals(section)){            
             page = "/WEB-INF/home.jsp";
         }
         
         
-        //                                 Bouton Catalogue                                          //
+        //                                 Bouton Catalogue                                    //
         
         if("catalog".equals(section)){            
             page = "/WEB-INF/catalog.jsp";
@@ -73,16 +73,19 @@ public class ControllerMain extends HttpServlet {
         
 
         
-        //                                 Bouton monCompte                                          //
+        //                                 Bouton monCompte                                    //
         
         if("monCompte".equals(section)){            
             page = "/WEB-INF/jspCustomerAccount.jsp";
         }
         
         
+        
+        
+        
        
         //--------------------------------------------------------------------------------------//
-        //                                      Gestion des pages compte client                                           //
+        //                                      Gestion des pages compte client                 //
         //--------------------------------------------------------------------------------------//
         
         if("createAccount".equals(section)){            
@@ -91,8 +94,10 @@ public class ControllerMain extends HttpServlet {
         
         
         
-      
-                                    //      Sous Bouton Catalogue         //
+        //--------------------------------------------------------------------------------------//
+        //                                      Gestion des pages catalogue                     //
+        //--------------------------------------------------------------------------------------//
+       
         if(getServletContext().getAttribute("gestionCatalogue") == null){
 
             try {
@@ -104,21 +109,17 @@ public class ControllerMain extends HttpServlet {
         }
         
         
-        if("bisou".equals(section)){
+        if("menuCatalogNav".equals(section)){
             page="/WEB-INF/includes/navigator.jsp";
         }
         
-        
-        
-        
         GestionCatalogue gCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
         
-        
-        if("menuCatalog".equals(section)){
+        if("listCatalog".equals(section)){
             
             List<String> keys = gCatalog.getKeys();
             request.setAttribute("keys", keys);
-            page="/WEB-INF/bisou.jsp";
+            page="/WEB-INF/includes/menuCatalogNav.jsp";
             
         }
         

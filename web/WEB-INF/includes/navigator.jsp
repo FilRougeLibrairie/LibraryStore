@@ -5,10 +5,9 @@
 <!--  -->
 
 <c:url value="ControllerMain?section=home" var="url100" />
-<c:url value="ControllerMain?section=catalog" var="url101" />
+<c:url value="ControllerMain?section=catalog" var="url101" /> 
 <c:url value="ControllerMain?section=monCompte" var="url102" />
-<c:url value="ControllerMain?section=menuCatalog" var="url103" />
-
+<c:url value="ControllerMain?section=listCatalog" var="url03" />
 
 
 <nav class="navbar navbar-inverse">
@@ -28,22 +27,39 @@
 
                 <!--CATALOGUE -->
 
-                <li><a class="dropdown" href="${url101}" data-toggle="dropdown">Catalogue
+                <%-- <li><a href="${url03}">Catalogue
+
+                        <c:forEach items="${keys}" var="c">
+                            <h1>${c}</h1>  
+                        </c:forEach>   
+                    </a></li>
+                --%>
 
 
-                        
-                             <ul class="dropdown-menu">
-                           
-                                 <li><a href="${url103}"></a></li>
-                                 
-                                
-                           
-                             </ul>
+
+                <li class="dropdown ">
+
+                     <a href="${url03}" class="dropdown-toggle" data-toggle="dropdown">Catalogue <b class="caret"></b></a>
+                    <div class="dropdown-menu menuCatalog">
+
+                        <%@include file="menuCatalogNav.jsp" %>
+
+                    </div>
+                </li>
 
 
-                </a></li>
 
 
+                <li class="dropdown ">
+                    <a href="${url03}" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <div class="dropdown-menu menuCatalog">
+
+                        <c:forEach items="${keys}" var="c">
+                            <h1>${c}</h1>  
+                        </c:forEach>  
+
+                    </div>
+                </li>
 
                 <!--LIVRE -->
 
