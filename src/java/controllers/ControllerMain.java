@@ -68,10 +68,21 @@ public class ControllerMain extends HttpServlet {
         }
         
         
+        //                                 Bouton monCompte                                          //
+        
+        if("monCompte".equals(section)){            
+            page = "/WEB-INF/jspCustomerAccount.jsp";
+        }
         
         
+       
+        //--------------------------------------------------------------------------------------//
+        //                                      Gestion des pages compte client                                           //
+        //--------------------------------------------------------------------------------------//
         
-        
+        if("createAccount".equals(section)){            
+            page = "/WEB-INF/jspCreateAccount.jsp";
+        }
         
         
         
