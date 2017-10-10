@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -30,6 +31,7 @@ public class ControllerMain extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
 
+        ServletContext application = this.getServletContext();
         HttpSession session = request.getSession();
         String section = request.getParameter("section");
         String page = "/WEB-INF/home.jsp";
