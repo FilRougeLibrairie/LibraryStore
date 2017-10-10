@@ -135,44 +135,17 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .leftSection{
 
     position:relative;
-    background-color:  white;
-    height:400px;  
+    background-color:white;
+    min-height:400px;  
 }
 
 
 .centralSection{
     position:relative;
-    height:400px;
+    min-height:400px;
 
 }
 .carousel {               
@@ -196,10 +169,19 @@
     height:400px;  
 }
 
-.rightSection p{
-    margin-top:10px;
-    text-align: center;
+
+
+.leftSection li{
+    
+    list-style: none;
+   
+    
 }
+
+.leftSection li>a{
+    
+}
+
 
 .bottomSection{
     margin-top:10px;
