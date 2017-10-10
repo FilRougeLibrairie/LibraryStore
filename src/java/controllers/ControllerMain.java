@@ -35,49 +35,22 @@ public class ControllerMain extends HttpServlet {
         HttpSession session = request.getSession();
         String section = request.getParameter("section");
         String page = "/WEB-INF/home.jsp";
-        
-        
+
         /////// DO NOT MODIFY ABOVE THIS LINE ///////
 
-       
-        
-        //--------------------------------------------------------------------------------------//
-        //                                      HOME                                            //
-        //--------------------------------------------------------------------------------------//
-        
         if("carousel-event".equals(section)){            
             page = "/WEB-INF/includes/carouselEvent.jsp";
         }
-        
-        
-        
-        //--------------------------------------------------------------------------------------//
-        //                               CONTROLEUR NAVIGATOR                                   //
-        //--------------------------------------------------------------------------------------//
-        
-        
-        //                                 Bouton Home                                          //
-        
-        if("home".equals(section)){            
+        else if("home".equals(section)){            
             page = "/WEB-INF/home.jsp";
         }
-        
-        
-        //                                 Bouton Catalogue                                          //
-        
-        if("catalog".equals(section)){            
+        else if("catalog".equals(section)){            
             page = "/WEB-INF/catalog.jsp";
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-       
+        // TODO: FOR TEST ONLY. REMOVE FOR PRODUCTION
+        else if(section != null){         
+            page = "/WEB-INF/"+ section +".jsp";
+        }
         
         /*if ("book".equals(section)) {
             page = "/WEB-INF/includes/book.jsp";
@@ -115,8 +88,14 @@ public class ControllerMain extends HttpServlet {
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         
         
+        //--------------------------------------------------------------------------------------//
+        //                               SEQUENCE VALIDATION PANIER                             //
+        //--------------------------------------------------------------------------------------//
         
         
+        if("cart-checkout".equals(section)){
+            page = "/WEB-INF/cart-checkout.jsp";
+        }
         
 
         /////// DO NOT MODIFY BELOW THIS LINE ///////
