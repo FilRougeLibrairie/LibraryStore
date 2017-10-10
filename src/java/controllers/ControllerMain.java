@@ -1,6 +1,9 @@
 package controllers;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -8,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import process.GestionCatalogue;
 
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
@@ -67,11 +71,24 @@ public class ControllerMain extends HttpServlet {
             page = "/WEB-INF/catalog.jsp";
         }
         
-          //                                 Bouton Book                                          //
+<<<<<<< HEAD
         
-         if("book".equals(section)){            
-            page = "/WEB-INF/book.jsp";    
+        //                                 Bouton monCompte                                          //
+        
+        if("monCompte".equals(section)){            
+            page = "/WEB-INF/jspCustomerAccount.jsp";
         }
+        
+        
+       
+        //--------------------------------------------------------------------------------------//
+        //                                      Gestion des pages compte client                                           //
+        //--------------------------------------------------------------------------------------//
+        
+        if("createAccount".equals(section)){            
+            page = "/WEB-INF/jspCreateAccount.jsp";
+        }
+        
         
         
        
@@ -80,30 +97,24 @@ public class ControllerMain extends HttpServlet {
         
         
         if(getServletContext().getAttribute("gestionLivre") == null){
+=======
+                                    //      Sous Bouton Catalogue         //
+        if(getServletContext().getAttribute("gestionCatalogue") == null){
+>>>>>>> master
             try {
-                getServletContext().setAttribute("gestionLivre", new GestionLivre());
+                getServletContext().setAttribute("gestionCatalogue", new GestionCatalogue());
             } catch (NamingException ex) {
-                System.out.println("erreur gestionLivre");
+                System.out.println("erreur gestionCatalogue");
                 ex.printStackTrace();
             }
         }
-        
-        GestionLivre gl = (GestionLivre) getServletContext().getAttribute("gestionLivre");
-        
-        
-        if("all-book".equals(section)){
+        GestionCatalogue gCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
+        if("menuCatalog".equals(section)){
             
-            try {              
-                HashMap<String, List<Book>> listeBook = gl.findBook();
-                List<String> clefs = gl.getClefs();
-                request.setAttribute("clefs", clefs);
-                request.setAttribute("listeBook", listeBook);
-                page = "/WEB-INF/catalog.jsp";
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            List<String> clefs = gCatalog.getClefs();
+            request.setAttribute("clefs", clefs);
         }
-        */
+        
         
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////

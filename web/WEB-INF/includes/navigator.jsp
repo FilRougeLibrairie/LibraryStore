@@ -6,6 +6,8 @@
 
 <c:url value="ControllerMain?section=home" var="url100" />
 <c:url value="ControllerMain?section=catalog" var="url101" />
+<c:url value="ControllerMain?section=monCompte" var="url102" />
+
 
 
 
@@ -129,7 +131,7 @@
 
 
                 <ul class="nav navbar-nav navbar-right navbar-test">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Mon Compte</a></li>
+                    <li><a href="${url102}"><span class="glyphicon glyphicon-user"></span> Mon Compte</a></li>
 
                 </ul>
         </div>

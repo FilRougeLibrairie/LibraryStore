@@ -1,16 +1,25 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        
-    </head>
-    <body>
+<%-- lien vers création de compte --%>
+<c:url value="ControllerMain?section=createAccount" var="url103" />
+
+<%-- header--%>
+<%@include file="includes/header.jsp" %>
+
+<%-- navigator --%>
+<%@include file="includes/navigator.jsp" %>
+
+
+
+
+
+<%-- body --%>
+
+<div class="monCompte">
         <h1>connexion</h1>
 
-        <hr>
-        <hr>
+        <div class="row">
+        <div class="bisous col-lg-6 " >
         <form action="action">
             <h3>Vous avez déjà un compte ?</h3>
             <br>
@@ -21,10 +30,11 @@
             <br>
             <input type="submit" value="Connexion" name="connect"/><br>
         </form>
-
-        <hr>
-        <hr> 
+        </div>
         
+        
+        
+        <div bisous class="col-lg-6 ">
         <form action="action">
             <h3>Vous êtes un nouveau client ? </h3>
             <br>
@@ -34,11 +44,12 @@
                 consulter et suivre vos commandes,et pleins d'autres choses encore.
             </p>
             <br>
-            <input type="submit" value="Créer un compte" name="createAccount"/><br>
+            
+            <a href="${url103}"><input type="button" value="Créer un compte" name="createAccount" >   </input></a><br>
         </form>
+        </div>
+        </div>
+</div>
         
-        <hr>
-        <hr> 
-        
-    </body>
-</html>
+<%-- footer --%>
+<%@include file="includes/footer.jsp" %>
