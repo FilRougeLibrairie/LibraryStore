@@ -5,15 +5,7 @@
 <!--  -->
 
 <c:url value="ControllerMain?section=home" var="url100" />
-
-
-
-
-
-
-
-
-
+<c:url value="ControllerMain?section=catalog" var="url101" />
 
 
 
@@ -32,7 +24,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="${url100}">Home</a></li>
-                <li><a href="#">Catalogue</a></li>
+                <li><a href="${url101}">Catalogue</a></li>
                 <li><a href="#">Livre</a></li>
 
                 <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Evenement<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
