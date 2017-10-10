@@ -1,5 +1,6 @@
 package controllers;
 
+import com.sun.media.sound.InvalidFormatException;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
 public class ControllerMain extends HttpServlet {
@@ -33,75 +33,56 @@ public class ControllerMain extends HttpServlet {
 
         ServletContext application = this.getServletContext();
         HttpSession session = request.getSession();
-        String section = request.getParameter("section");
-        String page = "/WEB-INF/home.jsp";
+        String pageId = request.getParameter("page");
+        String actionId = request.getParameter("action");
 
         /////// DO NOT MODIFY ABOVE THIS LINE ///////
+        if (pageId != null) {
+            loadPage(request, response, pageId);
+        } else if (actionId != null) {
+            performAction(actionId);
+            String pageToCallBackId = request.getParameter("callBack");
+            if(pageToCallBackId != null){
+                loadPage(request, response, pageToCallBackId);
+            }
+        } else {
+            throw new ServletException("Can't specify action and page parameter at the same time.");
+        }
 
-        if("carousel-event".equals(section)){            
-            page = "/WEB-INF/includes/carouselEvent.jsp";
-        }
-        else if("home".equals(section)){            
-            page = "/WEB-INF/home.jsp";
-        }
-        else if("catalog".equals(section)){            
-            page = "/WEB-INF/catalog.jsp";
-        }
-        // TODO: FOR TEST ONLY. REMOVE FOR PRODUCTION
-        else if(section != null){         
-            page = "/WEB-INF/"+ section +".jsp";
-        }
-        
-        /*if ("book".equals(section)) {
-            page = "/WEB-INF/includes/book.jsp";
-        }
-        
-        
-        if(getServletContext().getAttribute("gestionLivre") == null){
-            try {
-                getServletContext().setAttribute("gestionLivre", new GestionLivre());
-            } catch (NamingException ex) {
-                System.out.println("erreur gestionLivre");
-                ex.printStackTrace();
+    }
+
+    private void loadPage(HttpServletRequest request, HttpServletResponse response, String pageId) throws ServletException, IOException {
+        String pageUrl = "/WEB-INF/home.jsp";
+        if (page != null) {
+            switch (page) {
+                case "home":
+                    pageUrl = "/WEB-INF/home.jsp";
+                    break;
+
+                case "carousel-event":
+                    pageUrl = "/WEB-INF/includes/carouselEvent.jsp";
+                    break;
+
+                case "catalog":
+                    pageUrl = "/WEB-INF/catalog.jsp";
+                    break;
+
+                case "cart":
+                    pageUrl = "/WEB-INF/cart.jsp";
+                    break;
+                default:
+                    // TODO: FOR TEST ONLY. REMOVE FOR PRODUCTION
+                    pageUrl = "/WEB-INF/" + page + ".jsp";
+                    break;
             }
         }
-        
-        GestionLivre gl = (GestionLivre) getServletContext().getAttribute("gestionLivre");
-        
-        
-        if("all-book".equals(section)){
-            
-            try {              
-                HashMap<String, List<Book>> listeBook = gl.findBook();
-                List<String> clefs = gl.getClefs();
-                request.setAttribute("clefs", clefs);
-                request.setAttribute("listeBook", listeBook);
-                page = "/WEB-INF/catalog.jsp";
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        */
-        
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        
-        //--------------------------------------------------------------------------------------//
-        //                               SEQUENCE VALIDATION PANIER                             //
-        //--------------------------------------------------------------------------------------//
-        
-        
-        if("cart-checkout".equals(section)){
-            page = "/WEB-INF/cart-checkout.jsp";
-        }
-        
+        System.out.println("--------->>> page : " + pageUrl); // DEBUG : recursive calling if displayed twice
+        pageUrl = response.encodeURL(pageUrl);
+        getServletContext().getRequestDispatcher(pageUrl).include(request, response);
+    }
 
-        /////// DO NOT MODIFY BELOW THIS LINE ///////
-        System.out.println("--------->>> page : " + page); // DEBUG : recursive calling if displayed twice
-        page = response.encodeURL(page);
-        getServletContext().getRequestDispatcher(page).include(request, response);
+    private void performAction(String actionId) {
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
