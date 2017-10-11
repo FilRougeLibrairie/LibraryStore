@@ -26,20 +26,20 @@
 
                 <!--CATALOGUE -->
 
-                <li>
+               <li>
 
                     <ul id="menu-accordeon">
                         <li><a href="${url103}">Catalogue</a>
-                            <ul class="test">
+                 <%--            <ul class="test">
                                 <c:forEach items="${keys}" var="c">
                                     <li > <a href="#"  >   
                                             ${c}
                                         </a></li>  
                                     </c:forEach>    
                             </ul>
-                        </li>
+                        </li>--%>
                     </ul>
-                <li>
+                <li>   
                     <!--LIVRE -->
 
 

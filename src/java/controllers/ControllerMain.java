@@ -1,8 +1,12 @@
 package controllers;
 
+import entity.Book;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import process.GestionCatalogue;
-
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
 public class ControllerMain extends HttpServlet {
@@ -37,68 +40,44 @@ public class ControllerMain extends HttpServlet {
         HttpSession session = request.getSession();
         String section = request.getParameter("section");
         String page = "/WEB-INF/home.jsp";
-        
-        
-        /////// DO NOT MODIFY ABOVE THIS LINE ///////
 
-       
-        
+        /////// DO NOT MODIFY ABOVE THIS LINE ///////
         //------------------------------------------------------------------------------------//
         //                                      HOME                                          //
         //------------------------------------------------------------------------------------//
-        
-        if("carousel-event".equals(section)){            
+        if ("carousel-event".equals(section)) {
             page = "/WEB-INF/includes/carouselEvent.jsp";
         }
-        
-        
-        
+
         //------------------------------------------------------------------------------------//
         //                               CONTROLEUR NAVIGATOR                                 //
         //------------------------------------------------------------------------------------//
-        
-        
         //                                 Bouton Home                                        //
-        
-        if("home".equals(section)){            
+        if ("home".equals(section)) {
             page = "/WEB-INF/home.jsp";
         }
-        
-        
+
         //                                 Bouton Catalogue                                    //
-        
-        if("catalog".equals(section)){            
+        if ("catalog".equals(section)) {
             page = "/WEB-INF/catalog.jsp";
         }
-        
 
-        
         //                                 Bouton monCompte                                    //
-        
-        if("monCompte".equals(section)){            
+        if ("monCompte".equals(section)) {
             page = "/WEB-INF/jspCustomerAccount.jsp";
         }
-        
-        
-        
-        
-        
-       
+
         //--------------------------------------------------------------------------------------//
         //                                      Gestion des pages compte client                 //
         //--------------------------------------------------------------------------------------//
-        
-        if("createAccount".equals(section)){            
+        if ("createAccount".equals(section)) {
             page = "/WEB-INF/jspCreateAccount.jsp";
         }
-        
-        
-        
+
         //--------------------------------------------------------------------------------------//
-        //                                      Gestion des pages catalogue                     //
+        //                                      Gestion du nav   catalogue                      //
         //--------------------------------------------------------------------------------------//
-       
-        if(getServletContext().getAttribute("gestionCatalogue") == null){
+        if (getServletContext().getAttribute("gestionCatalogue") == null) {
 
             try {
                 getServletContext().setAttribute("gestionCatalogue", new GestionCatalogue());
@@ -107,46 +86,59 @@ public class ControllerMain extends HttpServlet {
                 ex.printStackTrace();
             }
         }
-        
-        
-        if("menuCatalogNav".equals(section)){
-            page="/WEB-INF/includes/navigator.jsp";
-        }
-        
+
         GestionCatalogue gCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
-        
-        if("listCatalog".equals(section)){
-            
+
+        if ("listCatalog".equals(section)) {
+
             List<String> keys = gCatalog.getKeys();
             request.setAttribute("keys", keys);
-            
-            page="/WEB-INF/catalog.jsp";
-            
+            page = "/WEB-INF/includes/menuCatalog.jsp";
+
         }
+
+        //--------------------------------------------------------------------------------------//
+        //                                      Gestion des pages catalogue                      //
+        //--------------------------------------------------------------------------------------//
         
+        GestionCatalogue gtCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
         
+        if ("pageCatalog".equals(section)) {
+            
+            try {
+                
+                
+                HashMap<String, List<Book>> listeBook = gtCatalog.findBook();
+                List<String> keys = gtCatalog.getKeys();
+                request.setAttribute("keys", keys);
+                request.setAttribute("listeBook", listeBook);
+                System.out.println(request.getAttribute("listeBook"));
+                
+                 page = "/WEB-INF/catalog.jsp";
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
         //--------------------------------------------------------------------------------------//
         //                                      Gestion des pages compte client                 //
         //--------------------------------------------------------------------------------------//
-        
-        if("book".equals(section)){
-            page="/WEB-INF/book.jsp";
+        if ("book".equals(section)) {
+            page = "/WEB-INF/book.jsp";
         }
-        
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        
-        
-        
-        
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
         /////// DO NOT MODIFY BELOW THIS LINE ///////
+        
+        
+        
         
         page = response.encodeURL(page);
         getServletContext().getRequestDispatcher(page).include(request, response);
-     
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
