@@ -32,6 +32,7 @@ public class GestionCatalogue implements Serializable {
     
     public HashMap<String, List<Book>> findBook() throws SQLException{
         List<Book> lp = bDAO.findAll();
+        
         HashMap<String, List<Book>> mp = new HashMap<>();
         for(String s : keys){
             List<Book> lcp = new ArrayList<>();
@@ -39,11 +40,13 @@ public class GestionCatalogue implements Serializable {
         }
         for(Book p : lp){
             String nom = p.getBooTitle().charAt(0)+"";
+            
             nom = nom.toUpperCase();
             for(String cle : keys){
                 String regex = "["+cle+"]";
                 if(nom.matches(regex)){
                     mp.get(cle).add(p);
+                   
                 }
             }
         }

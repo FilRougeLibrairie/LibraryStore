@@ -87,12 +87,12 @@ public class ControllerMain extends HttpServlet {
             }
         }
 
-        GestionCatalogue gCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
+//        GestionCatalogue gCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
 
         if ("listCatalog".equals(section)) {
 
-            List<String> keys = gCatalog.getKeys();
-            request.setAttribute("keys", keys);
+//            List<String> keys = gCatalog.getKeys();
+//            request.setAttribute("keys", keys);
             page = "/WEB-INF/includes/menuCatalog.jsp";
 
         }
@@ -112,9 +112,8 @@ public class ControllerMain extends HttpServlet {
                 List<String> keys = gtCatalog.getKeys();
                 request.setAttribute("keys", keys);
                 request.setAttribute("listeBook", listeBook);
-                System.out.println(request.getAttribute("listeBook"));
                 
-                 page = "/WEB-INF/catalog.jsp";
+                page = "/WEB-INF/catalog.jsp";
                 
             } catch (SQLException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);

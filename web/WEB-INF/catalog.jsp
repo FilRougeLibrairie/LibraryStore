@@ -25,30 +25,25 @@
     </div>
     <div class="centralSection col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
 
-        
-        
-     
-        <c:forEach items="${keys}" var="c">
-            <div>
-                <h1>${c}</h1>
-                <ul>
-                <c:forEach items="${listeBook.get(c)}" var="p">
-                    <li>
-                        <c:url value="#" var="url302" />
-                        <a href="${url302}">${p}</a>
-                    </li>
-                </c:forEach>
-                </ul>
-            </div>
-        </c:forEach>
-        
-        <c:forEach items="${keys}" var="c">
-          <h1>${c}</h1>  
-        </c:forEach>    
-          
-    </div>
-</div>
 
-<%-- footer --%>
-<%@include file="includes/footer.jsp" %>
+
+        <div class="row">
+            <c:forEach items="${keys}" var="c">
+                
+                        <c:forEach items="${listeBook.get(c)}" var="p">
+                         <div class="cover col-lg-4"><img src="${p.getBooFrontCover()}" alt="cover"/>   
+                         </div>     
+                        </c:forEach>
+                    
+            </c:forEach>
+            <div >
+
+
+
+
+            </div>
+        </div>
+
+        <%-- footer --%>
+        <%@include file="includes/footer.jsp" %>
 

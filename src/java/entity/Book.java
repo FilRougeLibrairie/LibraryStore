@@ -232,14 +232,14 @@ public class Book {
 
     @Override
     public String toString() {
-        return booTitle;
+        return booIsbn13 + booTitle + booTitle + booSubtitle + booPublishYear +  booPriceHT +  booResume +  booQuantity +  booStatus +  booFrontCover +  booPageNumber +  currentOffer + authorList +  subThemeList +  offerList + keyWordsList +  vatCode +  ediId + booLangCode + format + '}';
     }
+
+    
 
     public Vector getVector() {
         Vector vBook = new Vector();
-
-        vBook.add(this.booIsbn13);
-
+        vBook.add(this.booIsbn13); 
         return vBook;
     }
 }
