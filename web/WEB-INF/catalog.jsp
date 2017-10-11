@@ -31,7 +31,14 @@
             <c:forEach items="${keys}" var="c">
                 
                         <c:forEach items="${listeBook.get(c)}" var="p">
-                         <div class="cover col-lg-4"><img src="${p.getBooFrontCover()}" alt="cover"/>   
+                         <div class="cover col-lg-4">
+                             <img src="${p.getBooFrontCover()}" alt="cover"/>
+                             <div> ${p.getBooTitle()}</div>
+                             <div> ${p.getAuthorList()}</div>
+                             <div> ${p.getAuthorList()}</div>
+                             <div> ${p.getBooPriceHT()}</div>
+                             <div><a href="#" class="zocial cart">Commander</a></div>
+                             
                          </div>     
                         </c:forEach>
                     

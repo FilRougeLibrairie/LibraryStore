@@ -207,8 +207,12 @@
 .leftSection{
 
     position:relative;
-    background-color:white;
-    min-height:400px;  
+    background-color:#333;
+    min-height:400px;
+    height: auto;
+    color:white;
+    border-color: #101010;
+    border:1px solid transparent;
 }
 
 
