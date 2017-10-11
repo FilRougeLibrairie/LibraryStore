@@ -27,27 +27,34 @@
 
                 <!--CATALOGUE -->
 
-                <%-- <li><a href="${url03}">Catalogue
+              <li > <a class="catalog" href="${url03}"  >Catalogue</a>
+                    <div class=" menuCatalog">
+                        <c:forEach items="${keys}" var="c">
+                                <p>${c}</p>  
+                        </c:forEach>   
+                    </div>
+                 </li>
+                
+
+
+
+                 <%--         <li class="dropdown ">
+
+                     <a href="${url03}" class="dropdown-toggle" data-toggle="dropdown"> Catalogue <b class="caret"></b>
+                    
 
                         <c:forEach items="${keys}" var="c">
-                            <h1>${c}</h1>  
-                        </c:forEach>   
-                    </a></li>
-                --%>
+                        
+                            <h1>${c}</h1> 
+                            
+                          
+                        </c:forEach>  
+                        
 
-
-
-                <li class="dropdown ">
-
-                     <a href="${url03}" class="dropdown-toggle" data-toggle="dropdown">Catalogue <b class="caret"></b></a>
-                    <div class="dropdown-menu menuCatalog">
-
-                        <%@include file="menuCatalogNav.jsp" %>
-
-                    </div>
+                    </a>
                 </li>
 
-
+<%-- 
 
 
                 <li class="dropdown ">
@@ -60,7 +67,7 @@
 
                     </div>
                 </li>
-
+--%>
                 <!--LIVRE -->
 
 

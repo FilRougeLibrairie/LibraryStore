@@ -119,7 +119,8 @@ public class ControllerMain extends HttpServlet {
             
             List<String> keys = gCatalog.getKeys();
             request.setAttribute("keys", keys);
-            page="/WEB-INF/includes/menuCatalogNav.jsp";
+            
+//            page="/WEB-INF/includes/menuCatalogNav.jsp";
             
         }
         
