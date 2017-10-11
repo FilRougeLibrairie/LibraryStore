@@ -12,6 +12,7 @@ $(document).ready(function () {
 //});
 
 //   $('.menuCatalog').hide();
+<<<<<<< Updated upstream
 //
 //   $('.catalog').click(function ()
 //    {
@@ -26,6 +27,16 @@ $(document).ready(function () {
 //    
 //    $('.test').show();
 //});
+=======
+
+   $('.catalog').click(function ()
+    {
+        $('.menuCatalog').show(8000);
+//        return false;
+    });
+
+
+>>>>>>> Stashed changes
 
 
 
