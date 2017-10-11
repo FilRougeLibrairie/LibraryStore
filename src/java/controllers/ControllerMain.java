@@ -2,6 +2,12 @@ package controllers;
 
 import com.sun.media.sound.InvalidFormatException;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import process.BeanCatalog;
+import process.CatalogItem;
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
 public class ControllerMain extends HttpServlet {
@@ -35,18 +43,20 @@ public class ControllerMain extends HttpServlet {
         HttpSession session = request.getSession();
         String pageId = request.getParameter("page");
         String actionId = request.getParameter("action");
-
         /////// DO NOT MODIFY ABOVE THIS LINE ///////
-        if (pageId != null) {
-            loadPage(request, response, pageId);
-        } else if (actionId != null) {
+
+        if (actionId != null) {
             performAction(actionId);
             String pageToCallBackId = request.getParameter("callBack");
-            if(pageToCallBackId != null){
+            if (pageToCallBackId != null) {
                 loadPage(request, response, pageToCallBackId);
             }
+        }
+        if (pageId != null) {
+            loadPage(request, response, pageId);
         } else {
-            throw new ServletException("Can't specify action and page parameter at the same time.");
+            pageId = "/WEB-INF/home.jsp";
+            loadPage(request, response, pageId);
         }
 
     }
@@ -63,17 +73,33 @@ public class ControllerMain extends HttpServlet {
                     pageUrl = "/WEB-INF/includes/carouselEvent.jsp";
                     break;
 
+//                case "catalog":
+//                    pageUrl = "/WEB-INF/catalog.jsp";
+//                    break;
+
                 case "catalog":
                     pageUrl = "/WEB-INF/catalog.jsp";
+                    if (this.getServletContext().getAttribute("beanCatalog") == null) {
+                        try {
+                            this.getServletContext().setAttribute("beanCatalog", new BeanCatalog());
+                        } catch (NamingException ex) {
+                            System.out.println("erreur beanCatalog");
+                            ex.printStackTrace();
+                        }
+                    }
+                    BeanCatalog beanCat = (BeanCatalog) getServletContext().getAttribute("beanCatalog");
+                    Collection listItems = beanCat.findAllCatalogItems();
+                    request.setAttribute("listItems", listItems);
+                    
                     break;
 
                 case "cart":
                     pageUrl = "/WEB-INF/cart.jsp";
                     break;
-                default:
-                    // TODO: FOR TEST ONLY. REMOVE FOR PRODUCTION
-                    pageUrl = "/WEB-INF/" + pageId + ".jsp";
-                    break;
+//                default:
+//                    // TODO: FOR TEST ONLY. REMOVE FOR PRODUCTION
+//                    pageUrl = "/WEB-INF/" + pageId + ".jsp";
+//                    break;
             }
         }
         System.out.println("--------->>> page : " + pageUrl); // DEBUG : recursive calling if displayed twice
@@ -82,7 +108,13 @@ public class ControllerMain extends HttpServlet {
     }
 
     private void performAction(String actionId) {
+        if (actionId != null) {
+            switch (actionId) {
+                case "addToCart":
 
+                    break;
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

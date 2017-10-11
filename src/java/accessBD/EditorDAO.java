@@ -248,13 +248,14 @@ public class EditorDAO  implements Serializable {
     public Editor find(int id) {
        Editor editor = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FORM " + TABLE + " WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
-                .append(" = ")
-                .append(id);
+                .append(" = ?");
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setInt(1, id);
+            
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {

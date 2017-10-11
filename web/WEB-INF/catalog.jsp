@@ -9,37 +9,34 @@
 <%@include file="includes/navigator.jsp" %>
 
 
-
-
-
 <%-- body --%>
+<h2>Hello Catalog</h2>
 
-<%--<c:url value="ControllerMain?section=carousel-event" var="url01" />
-<c:import url="${url01}" /> --%>
+<div>
+    <ul>
+           <c:forEach var="item" items="${listItems}">
+               <div>
+                   <h3><a href="controllerMain?action=addToCart&id=${item.getBookIsbn()}&callBack=catalog">${item.getBookTitle()}</a></h3>
+                   <img src="${item.getImageURL()}"/>
+                   <p>${item.getEditorName()} | 
+                       <c:forEach var="author" items="${item.getListAuthors()}">
+                          ${author}
+                          <c:if test="${item.getListAuthors().size() > 1}" var="a">
+                              , 
+                          </c:if>
+                       </c:forEach>
+                   </p>
+               </div>
+           </c:forEach>
+    </ul>
+</div>
 
-<p>test</p>
+
+<a href="controllerMain?action=addToCart&id=9781444799132&callBack=catalog">The whistler</a><br>
+<a href="controllerMain?action=addToCart&id=9782226328717&callBack=catalog">Fin de ronde</a><br>
+<a href="controllerMain?action=addToCart&id=9782226328717&callBack=catalog">Underground railroad </a><br>
+
+
 
 <%-- footer --%>
 <%@include file="includes/footer.jsp" %>
-
-
-
-
-
-
-<%--
-<c:url value="ControllerMain?section=menu-main" var="url01" />
-<c:import url="${url01}" />
-<c:forEach items="${clefs}" var="c">
-    <div>
-        <h1>${c}</h1>
-        <ul>
-            <c:forEach items="${listeBook.get(c)}" var="p">
-                <li>
-                <c:url value="#" var="url350" />
-                <a href="${url350}">${p}</a>
-                </li>
-            </c:forEach>
-        </ul>
-    </div>
-</c:forEach>  --%>
