@@ -16,7 +16,7 @@
 
 <div class="row">
  
-    <div class="leftSection col-lg-offset-1 col-lg-2 col-lg-offset-1 col-md-offset-2 col-md-2 col-md-offset-2 col-sm-offset-2 col-sm-2 col-sm-offset-2  col-xs-offset-2 col-xs-2 col-xs-offset-2">
+    <div class="leftSection col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
         <ul>
             <li><a href="#">Prix </a>
             
@@ -26,7 +26,14 @@
            
         </ul>
     </div>
-    <div class="centralSection col-lg-8 col-md-8 col-sm-8 col-xs-8 "></div>
+    <div class="centralSection col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+        
+        
+        
+        
+        
+        
+    </div>
 </div>
 
 

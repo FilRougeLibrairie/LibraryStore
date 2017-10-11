@@ -11,15 +11,21 @@ $(document).ready(function () {
 //    
 //});
 
-   $('.menuCatalog').hide();
-
-   $('.catalog').click(function ()
-    {
-        $('.menuCatalog').show(8000);
-//        return false;
-    });
-
-
+//   $('.menuCatalog').hide();
+//
+//   $('.catalog').click(function ()
+//    {
+//        $('.menuCatalog').show();
+////          return false;
+//    });
+//
+//$('.test').hide();
+//
+//$('.bouton').click(function()
+//{
+//    
+//    $('.test').show();
+//});
 
 
 

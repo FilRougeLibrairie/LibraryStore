@@ -120,10 +120,18 @@ public class ControllerMain extends HttpServlet {
             List<String> keys = gCatalog.getKeys();
             request.setAttribute("keys", keys);
             
-//            page="/WEB-INF/includes/menuCatalogNav.jsp";
+            page="/WEB-INF/catalog.jsp";
             
         }
         
+        
+        //--------------------------------------------------------------------------------------//
+        //                                      Gestion des pages compte client                 //
+        //--------------------------------------------------------------------------------------//
+        
+        if("book".equals(section)){
+            page="/WEB-INF/book.jsp";
+        }
         
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,9 +143,10 @@ public class ControllerMain extends HttpServlet {
         
 
         /////// DO NOT MODIFY BELOW THIS LINE ///////
-        System.out.println("--------->>> page : " + page); // DEBUG : recursive calling if displayed twice
+        
         page = response.encodeURL(page);
         getServletContext().getRequestDispatcher(page).include(request, response);
+     
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

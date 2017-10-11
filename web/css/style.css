@@ -1,4 +1,58 @@
 
+
+.test{
+    background:white;
+}
+
+#menu-accordeon {
+  padding:0;
+}
+#menu-accordeon ul {
+  
+}
+#menu-accordeon li {
+  
+  
+}
+#menu-accordeon li li {
+   max-height:0;
+   overflow: hidden;
+   transition: all .5s;
+   border-radius:0;
+   box-shadow: none;
+   border:none;
+   margin:0
+}
+#menu-accordeon a {
+  display:block;
+  text-decoration: none;
+  color:#9d9d9d;
+  background-color:transparent;
+  display:block;
+  position:relative;
+  padding:15px;
+  
+}
+#menu-accordeon ul li a, #menu-accordeon li:hover li a {
+  font-size:1em;
+  display:block;
+  position:relative;
+}
+#menu-accordeon li:hover {
+   
+}
+#menu-accordeon li li:hover {
+   
+}
+#menu-accordeon ul li:last-child {
+   border-radius: 0 0 6px 6px;
+   border:none;
+}
+#menu-accordeon li:hover li {
+  max-height: 15em;
+}
+
+
 .contener{
     position:absolute; 
     background:  100%   url("../image/background.png") ;
