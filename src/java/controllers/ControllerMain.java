@@ -79,17 +79,19 @@ public class ControllerMain extends HttpServlet {
 
                 case "catalog":
                     pageUrl = "/WEB-INF/catalog.jsp";
-                    if (this.getServletContext().getAttribute("beanCatalog") == null) {
+                    if (request.getAttribute("beanCatalog") == null) {
                         try {
-                            this.getServletContext().setAttribute("beanCatalog", new BeanCatalog());
+                            request.setAttribute("beanCatalog", new BeanCatalog());
                         } catch (NamingException ex) {
                             System.out.println("erreur beanCatalog");
                             ex.printStackTrace();
                         }
                     }
-                    BeanCatalog beanCat = (BeanCatalog) getServletContext().getAttribute("beanCatalog");
-                    Collection listItems = beanCat.findAllCatalogItems();
+                    BeanCatalog beanCat = (BeanCatalog) request.getAttribute("beanCatalog");
+                    Collection listItems = beanCat.findCatalogItems(20, 0);
                     request.setAttribute("listItems", listItems);
+                    int itemCount = beanCat.getItemsCount();
+                    request.setAttribute("itemsCount", itemCount);
                     
                     break;
 

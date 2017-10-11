@@ -26,9 +26,10 @@ public class BeanCatalog implements Serializable {
         vatDAO = new VatDAO();
     }
 
-    public Collection findAllCatalogItems() {
+    public Collection findCatalogItems(int itemsPerPage, int countFrom) {
+        
         Collection listItems = new ArrayList();
-        List<Book> books = bookDAO.findAll();
+        Collection<Book> books = bookDAO.findBooksByOffset(itemsPerPage, countFrom);
         for(Book book : books){
             CatalogItem catItem = new CatalogItem();
             catItem.setBook(book);
@@ -38,6 +39,10 @@ public class BeanCatalog implements Serializable {
             listItems.add(catItem);
         }
         return listItems;
+    }
+    
+    public int getItemsCount(){
+        return bookDAO.countBooksNumber();
     }
 
 }

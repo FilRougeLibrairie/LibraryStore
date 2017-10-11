@@ -1,6 +1,5 @@
 package accessBD;
 
-
 import names.SQLNames.AuthorNames;
 import names.SQLNames.BookNames;
 import entity.Author;
@@ -14,11 +13,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Vector;
 import javax.naming.NamingException;
 
-
-public class BookDAO  implements Serializable {
+public class BookDAO implements Serializable {
 
     private final String TABLE = "Book";
     private MyConnexion mc;
@@ -44,24 +43,23 @@ public class BookDAO  implements Serializable {
     private BookLanguage language;
     private Forma format;
 
-    private String COLUMNS_CREATE = ISBN_13 + ", " + VAT_CODE + ", "
+    private String COLUMNS = ISBN_13 + ", " + VAT_CODE + ", "
             + EDITOR_ID + ", " + TITLE + ", " + SUBTITLE + ", "
             + PUBLICATION_YEAR + ", " + PRICE_HT + ", " + RESUME + ", "
             + QUANTITY + ", " + STATUS + ", " + FRONT_COVER + ", "
             + PAGE_NUMBER + ", " + LANGUAGE_ID + ", " + FORMAT_ID;
 
     public BookDAO() throws NamingException {
-         mc= new MyConnexion();
+        mc = new MyConnexion();
     }
 
-     
     public void create(Object obj) {
         book = (Book) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ISBN_13 + " = '" + book.getBooIsbn13() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+                + "INSERT INTO " + TABLE + " (" + COLUMNS + ")"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query);) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query);) {
 
             pstmt.setString(1, book.getBooIsbn13());
             pstmt.setFloat(2, book.getVatCode().getVatCode());
@@ -82,11 +80,10 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            
+
         }
     }
 
-     
     public void delete(Object obj) {
         String bookId = ((Book) obj).getBooIsbn13();
         StringBuffer query = new StringBuffer();
@@ -95,15 +92,14 @@ public class BookDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + bookId + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+
         }
     }
 
-     
     public void update(Object obj) {
         book = (Book) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
@@ -125,7 +121,7 @@ public class BookDAO  implements Serializable {
                 .append(book.getBooIsbn13())
                 .append("'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             pstmt.setFloat(1, book.getVatCode().getVatCode());
             pstmt.setInt(2, book.getEdiId().getEdiId());
@@ -145,12 +141,90 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            
 
         }
     }
 
-     
+    public int countBooksNumber() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM Book";
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return count;
+    }
+    
+    
+    public Collection findBooksByOffset(int itemsPerPage, int countFrom){
+        bookList = new Vector<Book>();
+        book = null;
+        vat = null;
+        editor = null;
+        language = null;
+        format = null;
+
+        StringBuilder query = new StringBuilder();
+        query.append("DECLARE @itemsPerPage int, @countFrom int ")
+             .append("SET @itemsPerPage = ? ")
+             .append("SET @countFrom = ? ")
+             .append("SELECT " + COLUMNS + " FROM Book b ")
+             .append("ORDER BY b.booTitle ASC OFFSET @countFrom ROWS ")
+             .append("FETCH NEXT @itemsPerPage ROWS ONLY");
+
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+            
+            pstmt.setInt(1, itemsPerPage);
+            pstmt.setInt(2, countFrom);
+            
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    book = new Book();
+                    vat = new Vat();
+                    editor = new Editor();
+                    language = new BookLanguage();
+                    format = new Forma();
+
+                    book.setBooIsbn13(rs.getString(ISBN_13));
+                    vat.setVatCode(rs.getInt(VAT_CODE));
+                    book.setVatCode(vat);
+                    editor.setEdiId(rs.getInt(EDITOR_ID));
+                    book.setEdiId(editor);
+                    book.setBooTitle(rs.getString(TITLE));
+                    book.setBooSubtitle(rs.getString(SUBTITLE));
+                    book.setBooPublishYear(rs.getString(PUBLICATION_YEAR));
+                    book.setBooPriceHT(rs.getFloat(PRICE_HT));
+                    book.setBooResume(rs.getString(RESUME));
+                    book.setBooQuantity(rs.getInt(QUANTITY));
+                    book.setBooStatus(rs.getInt(STATUS));
+                    book.setBooFrontCover(rs.getString(FRONT_COVER));
+                    book.setBooPageNumber(rs.getInt(PAGE_NUMBER));
+                    language.setBooLangCode(rs.getInt(LANGUAGE_ID));
+                    book.setBooLangCode(language);
+                    format.setForId(rs.getInt(FORMAT_ID));
+                    book.setFormat(format);
+
+                    bookList.add(book);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+
+        }
+        return bookList;
+    }
+    
+    
+
     public Vector findAll() {
         bookList = new Vector<Book>();
         book = null;
@@ -161,7 +235,7 @@ public class BookDAO  implements Serializable {
 
         String query = "SELECT * FROM " + TABLE + " ORDER BY " + BookNames.TITLE;
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query)) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query)) {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.isBeforeFirst()) {
@@ -200,13 +274,11 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return bookList;
     }
 
-     
     public Book find(int id) {
         book = null;
         vat = null;
@@ -219,7 +291,7 @@ public class BookDAO  implements Serializable {
                 .append(" = ")
                 .append(id);
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -258,13 +330,12 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return book;
     }
 
-    public Author findAuthorByBook (String isbn) {
+    public Author findAuthorByBook(String isbn) {
         Author author = null;
         Book boo = null;
         StringBuffer query = new StringBuffer();
@@ -277,9 +348,8 @@ public class BookDAO  implements Serializable {
                 .append("WHERE wri.booIsbn13 ")
                 .append(" = ")
                 .append("'" + isbn + "'");
-                
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -297,14 +367,13 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
           //  System.out.println("ERROR Retrieving Author Object : " + ex.getMessage());
-            
 
         }
         return author;
-        
+
     }
-    
-    public Author findAuthorByTitle (String isbn) {
+
+    public Author findAuthorByTitle(String isbn) {
         Author author = null;
         Book boo = null;
         StringBuffer query = new StringBuffer();
@@ -317,9 +386,8 @@ public class BookDAO  implements Serializable {
                 .append("WHERE wri.booIsbn13 ")
                 .append(" = ")
                 .append("'" + isbn + "'");
-                
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -330,8 +398,7 @@ public class BookDAO  implements Serializable {
                     author.setAutId(rs.getInt(AuthorNames.ID));
                     author.setAutLastName(rs.getString(AuthorNames.FIRST_NAME));
                     author.setAutFirstName(rs.getString(AuthorNames.LAST_NAME));
-                    
-                    
+
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -339,15 +406,14 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return author;
-        
+
     }
-    
-     
-    public Book find(String name) {book = null;
+
+    public Book find(String name) {
+        book = null;
         vat = null;
         editor = null;
         language = null;
@@ -359,7 +425,7 @@ public class BookDAO  implements Serializable {
                 .append("'" + name + "' ")
                 .append("ORDER BY " + BookNames.TITLE);
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -398,15 +464,12 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return book;
     }
- 
 
-     
-    public Vector <Book> findByColumn(String column, String term) {
+    public Vector<Book> findByColumn(String column, String term) {
         bookList = new Vector<Book>();
         book = null;
         vat = null;
@@ -420,15 +483,14 @@ public class BookDAO  implements Serializable {
                 .append(" LIKE ")
                 .append("'" + term + "%'");
 
-
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                   book = new Book();
+                    book = new Book();
                     vat = new Vat();
                     editor = new Editor();
                     language = new BookLanguage();
@@ -461,7 +523,6 @@ public class BookDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return bookList;

@@ -10,31 +10,26 @@
 
 
 <%-- body --%>
-<h2>Hello Catalog</h2>
+<h2>Tous les livres : ${itemsCount} résultats</h2>
 
-<div>
+<div>Pagination</div>
+
+<div style="width:30%">
     <ul>
-           <c:forEach var="item" items="${listItems}">
-               <div>
+        <c:forEach var="item" items="${listItems}" varStatus="">
+               <div class="alert alert-info">
                    <h3><a href="controllerMain?action=addToCart&id=${item.getBookIsbn()}&callBack=catalog">${item.getBookTitle()}</a></h3>
-                   <img src="${item.getImageURL()}"/>
+                   <img class="img-thumbnail img-responsive" height="300px" width="200px" src="${item.getImageURL()}"/>
                    <p>${item.getEditorName()} | 
-                       <c:forEach var="author" items="${item.getListAuthors()}">
-                          ${author}
-                          <c:if test="${item.getListAuthors().size() > 1}" var="a">
-                              , 
-                          </c:if>
+                       <c:forEach var="author" items="${item.getListAuthors()}" varStatus="loop">
+                          ${author}<c:if test="${item.getListAuthors().size() > 1}"><c:if test="${!loop.last}">, </c:if></c:if>
                        </c:forEach>
                    </p>
+                   <h2><a href="controllerMain?action=addToCart&id=${item.getBookIsbn()}&callBack=catalog">Acheter</a></h2>
                </div>
            </c:forEach>
     </ul>
 </div>
-
-
-<a href="controllerMain?action=addToCart&id=9781444799132&callBack=catalog">The whistler</a><br>
-<a href="controllerMain?action=addToCart&id=9782226328717&callBack=catalog">Fin de ronde</a><br>
-<a href="controllerMain?action=addToCart&id=9782226328717&callBack=catalog">Underground railroad </a><br>
 
 
 
