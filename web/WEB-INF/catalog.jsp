@@ -9,6 +9,8 @@
 <%@include file="includes/navigator.jsp" %>
 
 
+<%-- body --%>
+<h2>Tous les livres : ${itemsCount} résultats</h2>
 
 <%-- body --%>
 

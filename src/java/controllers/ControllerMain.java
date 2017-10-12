@@ -39,6 +39,7 @@ public class ControllerMain extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
 
+        ServletContext application = this.getServletContext();
         HttpSession session = request.getSession();
         String section = request.getParameter("section");
         String action = request.getParameter("action");
