@@ -25,25 +25,43 @@
     </div>
     <div class="centralSection col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
 
-
-
-        <div class="row">
+        <div class="col-lg-12">
             <c:forEach items="${keys}" var="c">
-                
-                        <c:forEach items="${listeBook.get(c)}" var="p">
-                         <div class="cover col-lg-4">
-                             <img src="${p.getBooFrontCover()}" alt="cover"/>
-                             <div> ${p.getBooTitle()}</div>
-                             <div> ${p.getAuthorList()}</div>
-                             <div> ${p.getAuthorList()}</div>
-                             <div> ${p.getBooPriceHT()}</div>
-                             <div><a href="#" class="zocial cart">Commander</a></div>
-                             
-                         </div>     
-                        </c:forEach>
-                    
+                <c:forEach items="${listeBook.get(c)}" var="p">
+                    <div class="cover col-lg-4">
+                        <img src="${p.getBooFrontCover()}" alt="cover"/>
+                        <div> ${p.getBooTitle()}</div>
+                        <div> ${p.getAuthorList()}</div>
+                        <div> ${p.getAuthorList()}</div>
+                        <div> ${p.getBooPriceHT()}</div>
+                        <div><a href="#" class="zocial cart">Commander</a></div>   
+                    </div>     
+                </c:forEach>
             </c:forEach>
-            <div >
+         <div >
+
+
+             <div class="col-lg-12">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Précédent</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Suivant</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+             </div>
 
 
 
