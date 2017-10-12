@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import names.SQLNames.ReviewNames;
+//import names.SQLNames.ReviewNames;
 import entity.Customer;
 import entity.OrderLine;
 import entity.Review;
@@ -20,15 +20,15 @@ public class ReviewDAO  implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "Review";
 
-    private final String ID = ReviewNames.ID;
-    private final String CUSTOMER_ID = ReviewNames.CUSTOMER_ID;
-    private final String BOOK_ISBN_13 = ReviewNames.BOOK_ISBN_13;
-    private final String ORDERLINE_ID = ReviewNames.ORDERLINE_ID;
-    private final String NOTE = ReviewNames.NOTE;
-    private final String COMMENT = ReviewNames.COMMENT;
-    private final String DATE = ReviewNames.DATE;
-    private final String IP = ReviewNames.IP;
-    private final String STATUS = ReviewNames.STATUS;
+    private final String ID = "revId";
+    private final String CUSTOMER_ID = "cusId";
+    private final String BOOK_ISBN_13 = "booIsbn13";
+    private final String ORDERLINE_ID = "ordLineId";
+    private final String NOTE = "revNote";
+    private final String COMMENT = "revComment";
+    private final String DATE = "revDate";
+    private final String IP = "revIP";
+    private final String STATUS = "revStatus";
 
     private String COLUMNS_CREATE = CUSTOMER_ID + ", " + BOOK_ISBN_13 + ", " + ORDERLINE_ID + ", "
             + NOTE + ", " + COMMENT + ", " + DATE + ", " + IP + ", "
@@ -262,7 +262,7 @@ public class ReviewDAO  implements Serializable {
     public int countReviewsByStatus(int statusCode){
         int numberOfReviews = 0;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT " + ReviewNames.STATUS + " FROM Review WHERE " + ReviewNames.STATUS + " = ?");
+        query.append("SELECT " + STATUS + " FROM Review WHERE " + STATUS + " = ?");
         
          try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 

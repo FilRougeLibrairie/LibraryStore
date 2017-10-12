@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import names.SQLNames.PaymentNames;
+//import names.SQLNames.PaymentNames;
 import entity.Payment;
 import entity.Purchase;
 import java.io.Serializable;
@@ -19,13 +19,13 @@ public class PaymentDAO  implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "Payment";
 
-    private final String ID = PaymentNames.ID;
-    private final String PURCHASE_ID = PaymentNames.PURCHASE_ID;
-    private final String VALIDATION = PaymentNames.VALIDATION;
-    private final String CHOICE = PaymentNames.CHOICE;
-    private final String DATE = PaymentNames.DATE;
-    private final String CARD_TYPE = PaymentNames.CARD_TYPE;
-    private final String OWNER_NAME = PaymentNames.OWNER_NAME;
+    private final String ID = "payId";
+    private final String PURCHASE_ID = "purId";
+    private final String VALIDATION = "payValidate";
+    private final String CHOICE = "payChoice";
+    private final String DATE = "payDate";
+    private final String CARD_TYPE = "payCardType";
+    private final String OWNER_NAME = "payOwnerName";
 
     private String COLUMNS_CREATE = PURCHASE_ID + ", " + VALIDATION + ", " + CHOICE + ", "
             + DATE + ", " + CARD_TYPE + ", " + OWNER_NAME;

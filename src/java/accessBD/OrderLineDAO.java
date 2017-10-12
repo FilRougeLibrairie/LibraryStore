@@ -1,7 +1,8 @@
 package accessBD;
 
 
-import names.SQLNames.OrderLineNames;
+//import names.SQLNames.OrderLineNames;
+
 import entity.Book;
 import entity.OrderLine;
 import entity.Purchase;
@@ -17,14 +18,15 @@ import javax.naming.NamingException;
 public class OrderLineDAO  implements Serializable {
 
     private MyConnexion mc;
+    
     private final String TABLE = "OrderLine";
 
-    private final String ID = OrderLineNames.ID;
-    private final String PURCHASE_ID = OrderLineNames.PURCHASE_ID;
-    private final String BOOK_ISBN_13 = OrderLineNames.BOOK_ISBN_13;
-    private final String QUANTITY = OrderLineNames.QUANTITY;
-    private final String PRICE_HT = OrderLineNames.PRICE_HT;
-    private final String VAT = OrderLineNames.VAT;
+    private final String ID = "ordLineId";
+    private final String PURCHASE_ID = "purId";
+    private final String BOOK_ISBN_13 = "booIsbn13";
+    private final String QUANTITY = "ordLineQuantity";
+    private final String PRICE_HT = "ordBookPriceHT";
+    private final String VAT = "ordBookVAT";
 
     Vector<OrderLine> orderLineList;
     OrderLine ordLine;

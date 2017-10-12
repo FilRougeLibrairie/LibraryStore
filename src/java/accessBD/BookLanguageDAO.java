@@ -1,7 +1,6 @@
 
 package accessBD;
 
-import names.SQLNames.BookLanguageNames;
 import entity.BookLanguage;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -17,9 +16,9 @@ public class BookLanguageDAO  implements Serializable{
 
     private MyConnexion mc;
     private final String TABLE = "BookLanguage";
-    private final String CODE = BookLanguageNames.CODE;
-    private final String NAME = BookLanguageNames.NAME;
-    private final String STATUS = BookLanguageNames.STATUS;
+    private final String CODE = "bookLangCode";
+    private final String NAME = "bookLangName";
+    private final String STATUS = "bookLangStatus";
 
     private String COLUMNS_CREATE =NAME + ", " + STATUS;;
 
@@ -147,15 +146,12 @@ public class BookLanguageDAO  implements Serializable{
         Vector<BookLanguage> bookLangList = new Vector<BookLanguage>();
         BookLanguage bookLang = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
-
-        System.out.println();
+        query.append("SELECT * FROM " + TABLE + " WHERE ? = ?");
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setString(1, column);
+            pstmt.setString(2, term);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -186,19 +182,19 @@ public class BookLanguageDAO  implements Serializable{
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(CODE)
-                .append(" = ")
-                .append("'" + id + "'");
+                .append(" = ?");
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
                     bookLang = new BookLanguage();
-                    bookLang.setBooLangCode(rs.getInt(BookLanguageNames.CODE));
-                    bookLang.setBooLangName(rs.getString(BookLanguageNames.NAME));
+                    bookLang.setBooLangCode(rs.getInt(CODE));
+                    bookLang.setBooLangName(rs.getString(NAME));
                 }
             } else {
                 throw new SQLException("ResultSet book lang was empty");
@@ -218,11 +214,12 @@ public class BookLanguageDAO  implements Serializable{
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(NAME)
-                .append(" = ")
-                .append("'" + name + "'");
+                .append(" = ?");
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setString(1, name);
+            
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {

@@ -2,7 +2,6 @@
 package accessBD;
 
 
-import names.SQLNames.StatusDisplayNames;
 import entity.StatusDisplay;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -17,10 +16,10 @@ public class StatusDisplayDAO  implements Serializable {
     
     private MyConnexion mc;
     private final String TABLE = "StatusDisplay";
-    private final String STATUS_CODE =  StatusDisplayNames.CODE;
-    private final String STATUS_NAME = StatusDisplayNames.NAME;
+    private final String STATUS_CODE =  "staCode";
+    private final String STATUS_NAME = "staName";
     
-     private String COLUMNS_CREATE = STATUS_CODE + ", " + STATUS_NAME;
+     private String COLUMNS_CREATE = "staCode,staName";
     
      
      //Constructor
@@ -79,22 +78,7 @@ public class StatusDisplayDAO  implements Serializable {
     }
     
      
-    public void delete(StatusDisplay obj) {
-     int staCode = ((StatusDisplay) obj).getStaCode();
-        StringBuffer query = new StringBuffer();
-        query.append("DELETE FROM " + TABLE + " WHERE ")
-                .append(STATUS_CODE)
-                .append(" = ")
-                .append("'" + staCode + "'");
-
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
-            pstmt.executeQuery();
-        } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
-        }}
-    
-      
+     
     public Vector<StatusDisplay> findAll() {
         Vector<StatusDisplay> StatusDisplayList = new Vector<StatusDisplay>();
         StatusDisplay stadi = null;    

@@ -57,7 +57,7 @@ public class GestionLivre implements Serializable{
      
        public HashMap<String, List<Book>> bookPage() throws SQLException {
         
-        List<Book> listBook = bookDAO.find();
+        List<Book> listBook = bookDAO.findAll();
         HashMap<String, List<Book>> hMapBook = new HashMap<>();
       
         for (Book b : listBook) {

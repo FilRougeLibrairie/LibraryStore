@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import names.SQLNames.MyLibraryNames;
+//import names.SQLNames.MyLibraryNames;
 import entity.MyLibrary;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -18,18 +18,18 @@ public class MyLibraryDAO  implements Serializable{
     private MyConnexion mc;
     private final String TABLE = "MyLibrary";
    
-    private final String ID = MyLibraryNames.ID;
-    private final String NAME = MyLibraryNames.NAME;
-    private final String LOGO = MyLibraryNames.LOGO;
-    private final String EMAIL = MyLibraryNames.EMAIL; 
-    private final String PHONE = MyLibraryNames.PHONE;
-    private final String SIRET = MyLibraryNames.SIRET;
-    private final String CGU = MyLibraryNames.CGU;
-    private final String STREET_NUMBER = MyLibraryNames.STREET_NUMBER;
-    private final String STREET_NAME = MyLibraryNames.STREET_NAME;
-    private final String COMPLEMENT = MyLibraryNames.COMPLEMENT;
-    private final String ZIP_CODE = MyLibraryNames.ZIP_CODE;
-    private final String CITY = MyLibraryNames.CITY;
+    private final String ID = "myLibId";
+    private final String NAME = "myLibName";
+    private final String LOGO = "myLibLogo";
+    private final String EMAIL = "myLibEmail"; 
+    private final String PHONE = "myLibPhone";
+    private final String SIRET = "myLibSiret";
+    private final String CGU = "myLibCGU";
+    private final String STREET_NUMBER = "myLibAddNumber";
+    private final String STREET_NAME = "myLibAddStreetName";
+    private final String COMPLEMENT = "myLibAddComplement";
+    private final String ZIP_CODE = "myLibAddZipCode";
+    private final String CITY = "myLibAddCity";
     
     private String COLUMNS_CREATE = NAME + ", " + LOGO + ", " + EMAIL + ", "
             + PHONE + ", " + SIRET + ", " + CGU + ", " + STREET_NUMBER + ", "

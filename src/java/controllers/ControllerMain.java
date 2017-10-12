@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import process.BeanConnexionClient;
 import process.GestionCatalogue;
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
@@ -55,6 +56,11 @@ public class ControllerMain extends HttpServlet {
         //                                 Bouton Home                                        //
         if ("home".equals(section)) {
             page = "/WEB-INF/home.jsp";
+        }    
+        //                                 Bouton Book                                        //    
+            
+        if ("book".equals(section)) {
+            page = "/WEB-INF/book.jsp";
         }
 
         //                                 Bouton Catalogue                                    //
@@ -87,12 +93,10 @@ public class ControllerMain extends HttpServlet {
             }
         }
 
-//        GestionCatalogue gCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
 
         if ("listCatalog".equals(section)) {
 
-//            List<String> keys = gCatalog.getKeys();
-//            request.setAttribute("keys", keys);
+
             page = "/WEB-INF/includes/menuCatalog.jsp";
 
         }
@@ -124,9 +128,56 @@ public class ControllerMain extends HttpServlet {
         //--------------------------------------------------------------------------------------//
         //                                      Gestion des pages compte client                 //
         //--------------------------------------------------------------------------------------//
-        if ("book".equals(section)) {
-            page = "/WEB-INF/book.jsp";
+        
+        
+        
+        
+        
+        
+        //--------------------------------------------------------------------------------------//
+        //                                      Gestion des pages compte client                 //
+        //--------------------------------------------------------------------------------------//
+        if ("createAccount".equals(section)) {
+            page = "/WEB-INF/jspCreateAccount.jsp";
+
         }
+        
+        if (request.getParameter("connect")!= null) {
+            session.setAttribute("BeanConnexionClient", new BeanConnexionClient());
+             BeanConnexionClient bLogin
+                        = (BeanConnexionClient)session.getAttribute("BeanConnexionClient");
+            boolean check = bLogin.checkLogin(request.getParameter("adresseMail"), request.getParameter("motDePasse"));
+           if(check){
+            page = "/WEB-INF/jspMainAccount.jsp";
+           }else{
+               if((request.getParameter("adresseMail").isEmpty())||request.getParameter("motDePasse").isEmpty()){
+                   
+               }
+           }
+        }
+        if ("valider".equals(section)) {
+            page = "/WEB-INF/jspMainAccount.jsp";
+        }
+        if ("updateAccountCustomer".equals(section)) {
+            page = "/WEB-INF/jspProfilCustomer.jsp";
+        }
+        if ("updateAddressCustomer".equals(section)) {
+            page = "/WEB-INF/jspAddressCustomer.jsp";
+        }
+        if ("orderCustomer".equals(section)) {
+            page = "/WEB-INF/jspOrderCustomer.jsp";
+        }
+        if ("return".equals(section)) {
+            page = "/WEB-INF/jspMainAccount.jsp";
+        }
+
+        
+        
+        
+        
+        
+        
+        
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////

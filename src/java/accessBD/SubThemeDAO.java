@@ -1,8 +1,7 @@
 package accessBD;
 
 
-import names.SQLNames.SubThemeNames;
-import static names.SQLNames.VATNames.CODE;
+
 import entity.Book;
 import entity.SubTheme;
 import entity.Theme;
@@ -18,11 +17,11 @@ public class SubThemeDAO  implements Serializable {
 
     private MyConnexion mc;
     private final String TABLE = "SubTheme";
-    private final String ID = SubThemeNames.ID;
-    private final String THEME_ID = SubThemeNames.THEME_ID;
-    private final String NAME = SubThemeNames.NAME;
-    private final String DESCRIPTION = SubThemeNames.DESCRIPTION;
-    private final String STATUS = SubThemeNames.DESCRIPTION;
+    private final String ID = "subId";
+    private final String THEME_ID = "theId";
+    private final String NAME = "subName";
+    private final String DESCRIPTION = "subDescription";
+    private final String STATUS = "subStatus";
 
     private String COLUMNS_CREATE = ID + ", " + THEME_ID + "' " + NAME + "' " + DESCRIPTION;
 
@@ -146,10 +145,10 @@ public class SubThemeDAO  implements Serializable {
 
                 while (rs.next()) {
                     sub = new SubTheme();
-                    sub.setSubId(rs.getInt(SubThemeNames.ID));
-                    sub.setSubName(rs.getString(SubThemeNames.NAME));
+                    sub.setSubId(rs.getInt(ID));
+                    sub.setSubName(rs.getString(NAME));
                     the = new Theme();
-                    the.setTheId(rs.getInt(SubThemeNames.THEME_ID));
+                    the.setTheId(rs.getInt(THEME_ID));
                     sub.setTheId(the);
                     sub.setSubStatus(rs.getInt(STATUS));
                     vecSubThemeList.add(sub);
@@ -196,10 +195,10 @@ public class SubThemeDAO  implements Serializable {
 
                 while (rs.next()) {
                     sub = new SubTheme();
-                    sub.setSubId(rs.getInt(SubThemeNames.ID));
-                    sub.setSubName(rs.getString(SubThemeNames.NAME));
+                    sub.setSubId(rs.getInt(ID));
+                    sub.setSubName(rs.getString(NAME));
                     the = new Theme();
-                    the.setTheId(rs.getInt(SubThemeNames.THEME_ID));
+                    the.setTheId(rs.getInt(THEME_ID));
                     sub.setTheId(the);
                     sub.setSubStatus(rs.getInt(STATUS));
                     vecSubThemeList.add(sub);
@@ -427,15 +426,6 @@ public class SubThemeDAO  implements Serializable {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
      
     public SubTheme find(int id) {
@@ -443,7 +433,7 @@ public class SubThemeDAO  implements Serializable {
         Theme the = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(CODE)
+                .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
 

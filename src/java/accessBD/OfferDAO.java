@@ -1,7 +1,8 @@
 
 package accessBD;
 
-import names.SQLNames.OfferNames;
+//import names.SQLNames.OfferNames;
+
 import entity.Offer;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -15,16 +16,17 @@ import javax.naming.NamingException;
 public class OfferDAO  implements Serializable {
 
     private MyConnexion mc;
+    
     private final String TABLE = "Offer";
 
-    private final String ID = OfferNames.ID;
-    private final String NAME = OfferNames.NAME;
-    private final String TEXT = OfferNames.TEXT;
-    private final String START = OfferNames.START;
-    private final String END = OfferNames.END;
-    private final String DISCOUNT = OfferNames.DISCOUNT;
-    private final String PICTURE = OfferNames.PICTURE;
-    private final String STATUS = OfferNames.STATUS;
+    private final String ID = "offId";
+    private final String NAME = "offName";
+    private final String TEXT = "offText";
+    private final String START = "offDateStart";
+    private final String END = "offDateEnd";
+    private final String DISCOUNT = "offDiscount";
+    private final String PICTURE = "offPicture";
+    private final String STATUS = "offStatus";
 
     private String COLUMNS_CREATE = NAME + ", " + TEXT
             + ", " + START + ", " + END + ", " + DISCOUNT + ", " + PICTURE+ " , " +STATUS;

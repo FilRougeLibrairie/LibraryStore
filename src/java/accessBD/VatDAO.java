@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import names.SQLNames.VATNames;
+//import names.SQLNames.VATNames;
 import entity.Vat;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -17,10 +17,10 @@ public class VatDAO  implements Serializable {
 
     private MyConnexion mc;
     private final String TABLE = "Vat";
-    private final String CODE = VATNames.CODE;
-    private final String RATE = VATNames.RATE;
-    private final String NAME = VATNames.NAME;
-    private final String STATUS = VATNames.STATUS;
+    private final String CODE = "vatCode";
+    private final String RATE = "vatRate";
+    private final String NAME = "vatName";
+    private final String STATUS = "vatStatus";
 
     private String COLUMNS_CREATE =  RATE + ", " + NAME;
 

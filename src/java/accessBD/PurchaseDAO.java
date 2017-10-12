@@ -1,7 +1,7 @@
 package accessBD;
 
 
-import names.SQLNames.PurchaseNames;
+//import names.SQLNames.PurchaseNames;
 import entity.Address;
 import entity.Customer;
 import entity.Purchase;
@@ -20,15 +20,15 @@ public class PurchaseDAO  implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "Purchase";
 
-    private final String ID = PurchaseNames.ID;
-    private final String CUSTOMER_ID = PurchaseNames.CUSTOMER_ID;
-    private final String SHIPPING_COST = PurchaseNames.SHIPPING_COST;
-    private final String ADDRESS_DELIVERY = PurchaseNames.ADDRESS_DELIVERY;
-    private final String ADDRESS_INVOICE = PurchaseNames.ADDRESS_INVOICE;
-    private final String IP = PurchaseNames.IP;
-    private final String SHIPPING_DATE = PurchaseNames.SHIPPING_DATE;
-    private final String SHIPPING_NUMBER = PurchaseNames.SHIPPING_NUMBER;
-    private final String INTERNAL_UUID = PurchaseNames.INTERNAL_UUID;
+    private final String ID = "purId";
+    private final String CUSTOMER_ID = "cusId";
+    private final String SHIPPING_COST = "shippingCostId";
+    private final String ADDRESS_DELIVERY = "addDeliveryId";
+    private final String ADDRESS_INVOICE = "addInvoiceId";
+    private final String IP = "purIP";
+    private final String SHIPPING_DATE = "shippingDate";
+    private final String SHIPPING_NUMBER = "shippingNumber";
+    private final String INTERNAL_UUID = "purInternalId";
 
     private String COLUMNS_CREATE = CUSTOMER_ID + ", " + SHIPPING_COST + ", "
             + ADDRESS_DELIVERY + ", " + ADDRESS_INVOICE + ", " + IP + ", " + SHIPPING_DATE + ", "
@@ -124,7 +124,7 @@ public class PurchaseDAO  implements Serializable {
      
     public Vector<Purchase> findAll() {
         purList = new Vector<Purchase>();
-        String query = "SELECT * FROM " + TABLE + " ORDER BY " + PurchaseNames.SHIPPING_DATE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + SHIPPING_DATE;
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query)) {
 

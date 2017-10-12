@@ -1,7 +1,7 @@
 package accessBD;
 
 
-import names.SQLNames.KeywordsNames;
+//import names.SQLNames.KeywordsNames;
 import entity.Keywords;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import javax.naming.NamingException;
 public class KeywordsDAO  implements Serializable {
 
     private MyConnexion mc;
-    private final String NAME = KeywordsNames.NAME;
+    private final String NAME = "keyName";
 
     private String COLUMNS = NAME;
 

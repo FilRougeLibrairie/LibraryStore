@@ -1,6 +1,6 @@
 package utils;
 
-import exception.CryptoException;
+
 import java.security.NoSuchAlgorithmException;
 import utils.Crypto;
 
@@ -9,7 +9,7 @@ import utils.Crypto;
  * @author ggarvanese
  */
 public class Pass_Gen {
-    public static void main(String[] args) throws NoSuchAlgorithmException, CryptoException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, Exception {
         
         /// Create New Password
         String[] pwd = Crypto.createPassword("1234");

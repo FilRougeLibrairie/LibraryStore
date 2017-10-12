@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -27,12 +28,23 @@ public class Customer {
     private String cusIP;
     private int cusStatus;
     private String cusComment;
+    private String cusClearPassword;
 
     //Constructor
     public Customer() {
     }
 
     //Setters
+
+    public void setCusDateOfBirth(Date cusDateOfBirth) {
+        this.cusDateOfBirth = cusDateOfBirth;
+    }
+
+    public void setCusClearPassword(String cusClearPassword) {
+        this.cusClearPassword = cusClearPassword;
+    }
+    
+    
     public void setCusID(int cusID) {
         this.cusID = cusID;
     }
@@ -105,6 +117,12 @@ public class Customer {
     }
 
     //Getters
+
+    public String getCusClearPassword() {
+        return cusClearPassword;
+    }
+    
+    
     public int getCusID() {
         return cusID;
     }

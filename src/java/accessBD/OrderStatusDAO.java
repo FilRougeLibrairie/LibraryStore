@@ -1,9 +1,7 @@
 package accessBD;
 
-import names.SQLNames.DeterminateNames;
-import names.SQLNames.OrderStatusNames;
-import names.SQLNames.PurchaseNames;
-import names.SQLNames.StatusDisplayNames;
+
+
 import entity.OrderStatus;
 import entity.Purchase;
 import java.io.Serializable;
@@ -19,8 +17,8 @@ public class OrderStatusDAO  implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "OrderStatus";
 
-    private final String CODE = OrderStatusNames.CODE;
-    private final String NAME = OrderStatusNames.NAME;
+    private final String CODE = "staCode";
+    private final String NAME = "staName";
 
     private String COLUMNS_CREATE = CODE + ", " + NAME;
 
@@ -109,7 +107,7 @@ public class OrderStatusDAO  implements Serializable {
         Vector<OrderStatus> ordList = new Vector<OrderStatus>();
         OrderStatus ord = null;
 
-        String query = "SELECT * FROM " + TABLE + " ORDER BY " + StatusDisplayNames.CODE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + CODE;
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query)) {
 
@@ -307,7 +305,7 @@ public class OrderStatusDAO  implements Serializable {
                 .append("JOIN Purchase pur ")
                 .append("ON det.purId = pur.purId ")
                 .append("WHERE ")
-                .append("pur." + PurchaseNames.ID)
+                .append("pur.purId")
                 .append(" = ")
                 .append("?");
 
@@ -323,9 +321,9 @@ public class OrderStatusDAO  implements Serializable {
                     os = new OrderStatus();
                     pur = new Purchase();
                     os.setPurchase(pur);
-                    os.setStaCode(rs.getInt(OrderStatusNames.CODE));
-                    os.setStaName(rs.getString(OrderStatusNames.NAME));
-                    os.setStatusDate(rs.getString(DeterminateNames.DATE_TIME));
+                    os.setStaCode(rs.getInt("staCode"));
+                    os.setStaName(rs.getString(CODE));
+                    os.setStatusDate(rs.getString(NAME));
                     osList.add(os);
                 }
             } else {

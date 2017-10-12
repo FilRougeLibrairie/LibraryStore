@@ -2,7 +2,6 @@
 package accessBD;
 
 
-import names.SQLNames.ThemeNames;
 import entity.Theme;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -18,10 +17,10 @@ public class ThemeDAO  implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "Theme";
 
-    public final String ID = ThemeNames.ID;
-    public final String NAME = ThemeNames.NAME;
-    public final String DESCRIPTION = ThemeNames.DESCRIPTION;
-    public final String STATUS = ThemeNames.DESCRIPTION;
+    public final String ID = "theId";
+    public final String NAME = "theName";
+    public final String DESCRIPTION = "theDescription";
+    public final String STATUS = "theStatus";
     
     
     private String COLUMNS_CREATE = NAME + ", " + DESCRIPTION;
@@ -164,9 +163,9 @@ public class ThemeDAO  implements Serializable {
 
                 while (rs.next()) {
                     theme= new Theme();
-                    theme.setTheId(rs.getInt(ThemeNames.ID));
-                    theme.setTheName(rs.getString(ThemeNames.NAME));
-                    theme.setTheDescription(rs.getString(ThemeNames.DESCRIPTION));
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
                     //vecThemeList.add(theme);
                 }
             } else {
