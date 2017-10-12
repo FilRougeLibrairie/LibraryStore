@@ -23,8 +23,12 @@
 
         </ul>
     </div>
+            
+            <c:url value="ControllerMain?section=catalog" var="url105" />
+            
+            
     <div class="centralSection col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-
+        <h1>Panier : <c:if test="${cartitems != null}" var="nb" >${cartitems}</c:if><c:if test="${cartitems == null}" var="nb" >0</c:if></h1>
         <div class="col-lg-12">
             <c:forEach items="${keys}" var="c">
                 <c:forEach items="${listeBook.get(c)}" var="p">
@@ -34,7 +38,7 @@
                         <div> ${p.getAuthorList()}</div>
                         <div> ${p.getAuthorList()}</div>
                         <div> ${p.getBooPriceHT()}</div>
-                        <div><a href="#" class="zocial cart">Commander</a></div>   
+                        <div><a href="ControllerMain?action=add&item=${p.getBooIsbn13()}&callback=pageCatalog" class="zocial cart">Commander</a></div>   
                     </div>     
                 </c:forEach>
             </c:forEach>

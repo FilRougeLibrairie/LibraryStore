@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import process.BeanConnexionClient;
 import process.GestionCatalogue;
+import process.beanPanier;
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
 public class ControllerMain extends HttpServlet {
@@ -40,8 +41,8 @@ public class ControllerMain extends HttpServlet {
 
         HttpSession session = request.getSession();
         String section = request.getParameter("section");
+        String action = request.getParameter("action");
         String page = "/WEB-INF/home.jsp";
-
         /////// DO NOT MODIFY ABOVE THIS LINE ///////
         //------------------------------------------------------------------------------------//
         //                                      HOME                                          //
@@ -49,16 +50,14 @@ public class ControllerMain extends HttpServlet {
         if ("carousel-event".equals(section)) {
             page = "/WEB-INF/includes/carouselEvent.jsp";
         }
-
         //------------------------------------------------------------------------------------//
         //                               CONTROLEUR NAVIGATOR                                 //
         //------------------------------------------------------------------------------------//
         //                                 Bouton Home                                        //
         if ("home".equals(section)) {
             page = "/WEB-INF/home.jsp";
-        }    
+        }
         //                                 Bouton Book                                        //    
-            
         if ("book".equals(section)) {
             page = "/WEB-INF/book.jsp";
         }
@@ -72,7 +71,6 @@ public class ControllerMain extends HttpServlet {
         if ("monCompte".equals(section)) {
             page = "/WEB-INF/jspCustomerAccount.jsp";
         }
-
         //--------------------------------------------------------------------------------------//
         //                                      Gestion des pages compte client                 //
         //--------------------------------------------------------------------------------------//
@@ -93,32 +91,27 @@ public class ControllerMain extends HttpServlet {
             }
         }
 
-
         if ("listCatalog".equals(section)) {
-
 
             page = "/WEB-INF/includes/menuCatalog.jsp";
 
         }
-
         //--------------------------------------------------------------------------------------//
         //                                      Gestion des pages catalogue                      //
         //--------------------------------------------------------------------------------------//
-        
         GestionCatalogue gtCatalog = (GestionCatalogue) getServletContext().getAttribute("gestionCatalogue");
-        
+
         if ("pageCatalog".equals(section)) {
-            
+
             try {
-                
-                
+
                 HashMap<String, List<Book>> listeBook = gtCatalog.findBook();
                 List<String> keys = gtCatalog.getKeys();
                 request.setAttribute("keys", keys);
                 request.setAttribute("listeBook", listeBook);
-                
+
                 page = "/WEB-INF/catalog.jsp";
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -128,12 +121,6 @@ public class ControllerMain extends HttpServlet {
         //--------------------------------------------------------------------------------------//
         //                                      Gestion des pages compte client                 //
         //--------------------------------------------------------------------------------------//
-        
-        
-        
-        
-        
-        
         //--------------------------------------------------------------------------------------//
         //                                      Gestion des pages compte client                 //
         //--------------------------------------------------------------------------------------//
@@ -141,19 +128,19 @@ public class ControllerMain extends HttpServlet {
             page = "/WEB-INF/jspCreateAccount.jsp";
 
         }
-        
-        if (request.getParameter("connect")!= null) {
+
+        if (request.getParameter("connect") != null) {
             session.setAttribute("BeanConnexionClient", new BeanConnexionClient());
-             BeanConnexionClient bLogin
-                        = (BeanConnexionClient)session.getAttribute("BeanConnexionClient");
+            BeanConnexionClient bLogin
+                    = (BeanConnexionClient) session.getAttribute("BeanConnexionClient");
             boolean check = bLogin.checkLogin(request.getParameter("adresseMail"), request.getParameter("motDePasse"));
-           if(check){
-            page = "/WEB-INF/jspMainAccount.jsp";
-           }else{
-               if((request.getParameter("adresseMail").isEmpty())||request.getParameter("motDePasse").isEmpty()){
-                   
-               }
-           }
+            if (check) {
+                page = "/WEB-INF/jspMainAccount.jsp";
+            } else {
+                if ((request.getParameter("adresseMail").isEmpty()) || request.getParameter("motDePasse").isEmpty()) {
+
+                }
+            }
         }
         if ("valider".equals(section)) {
             page = "/WEB-INF/jspMainAccount.jsp";
@@ -170,22 +157,44 @@ public class ControllerMain extends HttpServlet {
         if ("return".equals(section)) {
             page = "/WEB-INF/jspMainAccount.jsp";
         }
+        //--------------------------------------------------------------------------------------//
+        //                                      Gestion de l'ajout au catalogue                 //
+        //--------------------------------------------------------------------------------------//
+        if (request.getParameter("action") != null) {
+            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+            if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
+            }
+            String item = request.getParameter("item");
+            String actionType = request.getParameter("action");
+           if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
+            }
+            if ("add".equals(actionType)) {
+                bPanier.add(item);
+            }
+            if ("dec".equals(actionType)) {
+                bPanier.dec(item);
+            }
+            if ("del".equals(actionType)) {
+                bPanier.del(item);
+            }
+            if ("clear".equals(actionType)) {
+                bPanier.clear();
+            }
+            
+            request.setAttribute("cartitems", bPanier.getSize());
 
-        
-        
-        
-        
-        
-        
-        
-
+         //   if (request.getParameter("callback") != null) {
+               // page = "/WEB-INF/" + request.getParameter("callback") + ".jsp";
+                page = "/WEB-INF/catalog.jsp";
+           // }
+        }
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         /////// DO NOT MODIFY BELOW THIS LINE ///////
-        
-        
-        
-        
         page = response.encodeURL(page);
         getServletContext().getRequestDispatcher(page).include(request, response);
 
