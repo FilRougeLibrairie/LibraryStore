@@ -188,10 +188,10 @@ public class ControllerMain extends HttpServlet {
             
             request.setAttribute("cartitems", bPanier.getSize());
 
-         //   if (request.getParameter("callback") != null) {
-               // page = "/WEB-INF/" + request.getParameter("callback") + ".jsp";
-                page = "/WEB-INF/catalog.jsp";
-           // }
+            if (request.getParameter("callback") != null) {
+                page = "/WEB-INF/" + request.getParameter("callback") + ".jsp";
+                //page = "/WEB-INF/catalog.jsp";
+          }
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////
