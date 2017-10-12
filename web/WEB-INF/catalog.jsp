@@ -38,7 +38,7 @@
                         <div> ${p.getAuthorList()}</div>
                         <div> ${p.getAuthorList()}</div>
                         <div> ${p.getBooPriceHT()}</div>
-                        <div><a href="ControllerMain?action=add&item=${p.getBooIsbn13()}&callback=pageCatalog" class="zocial cart">Commander</a></div>   
+                        <div><a href="ControllerMain?action=add&item=${p.getBooIsbn13()}&callback=catalog" class="zocial cart">Commander</a></div>   
                     </div>     
                 </c:forEach>
             </c:forEach>
