@@ -1,8 +1,6 @@
-
 package accessBD;
 
-
-import names.SQLNames.EditorNames;
+//import names.SQLNames.EditorNames;
 import entity.Editor;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -16,30 +14,30 @@ import javax.naming.NamingException;
  *
  * @author cdi312
  */
-public class EditorDAO  implements Serializable {
+public class EditorDAO implements Serializable {
 
     private MyConnexion mc;
-    private final String TABLE = "Editor";
-
-    public final String ID = EditorNames.ID;
-    public final String NAME = EditorNames.NAME;
-    public final String PRESENTATION = EditorNames.PRESENTATION;
-    public final String STATUS = EditorNames.STATUS;
+    private String TABLE = "Editor";
+    private String ID = "ediId";
+    private String NAME = "ediName";
+    private String PRESENTATION = "ediPresentation";
+    private String STATUS = "ediStatusCode";
 
     private String COLUMNS_CREATE = NAME + ", " + PRESENTATION + ", " + STATUS;
 
-    public EditorDAO() throws NamingException{
-         mc= new MyConnexion();
+    public EditorDAO() throws NamingException {
+        mc = new MyConnexion();
     }
 
-     
     public void create(Object obj) {
+        String TABLE = "Editor";
+        String ID = "ediId";
         Editor edi = (Editor) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + edi.getEdiId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?)";
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query);) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query);) {
 
             pstmt.setString(1, edi.getEdiName());
             pstmt.setString(2, edi.getEdiPresentation());
@@ -53,8 +51,9 @@ public class EditorDAO  implements Serializable {
         }
     }
 
-     
     public void delete(Object obj) {
+        String TABLE = "Editor";
+        String ID = "ediId";
         int ediId = ((Editor) obj).getEdiId();
         StringBuffer query = new StringBuffer();
         query.append("DELETE FROM " + TABLE + " WHERE ")
@@ -62,7 +61,7 @@ public class EditorDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + ediId + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
@@ -70,8 +69,8 @@ public class EditorDAO  implements Serializable {
         }
     }
 
-     
     public void update(Object obj) {
+
         Editor edi = (Editor) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(NAME).append(" =?, ");
@@ -82,7 +81,7 @@ public class EditorDAO  implements Serializable {
                 .append(edi.getEdiId())
                 .append("'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
             pstmt.setString(1, edi.getEdiName());
             pstmt.setString(2, edi.getEdiPresentation());
             pstmt.setInt(3, edi.getEdiStatusCode());
@@ -95,14 +94,13 @@ public class EditorDAO  implements Serializable {
         }
     }
 
-     
     public Vector findAll() {
         Vector<Editor> editorList = new Vector<Editor>();
         Editor editor = null;
 
         String query = "SELECT * FROM " + TABLE;
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query)) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query)) {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.isBeforeFirst()) {
@@ -127,8 +125,7 @@ public class EditorDAO  implements Serializable {
         return editorList;
     }
 
-    
-    public Object findById(int id) {
+    public Editor findById(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -136,13 +133,12 @@ public class EditorDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + id + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
-            
-        if (rs.isBeforeFirst()) {
-            
+            if (rs.isBeforeFirst()) {
+
                 while (rs.next()) {
                     editor = new Editor();
                     editor.setEdiId(rs.getInt(ID));
@@ -151,8 +147,8 @@ public class EditorDAO  implements Serializable {
                     editor.setEdiStatusCode(rs.getInt(STATUS));
                 }
 
-        }else {
-               
+            } else {
+
                 throw new SQLException("ResultSet was empty");
             }
         } catch (SQLException ex) {
@@ -163,12 +159,10 @@ public class EditorDAO  implements Serializable {
         return editor;
     }
 
-   
     public Object findByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-  
     public Vector<Editor> findByCriteria(String column, String term) {
 
         Vector<Editor> editorList = new Vector<Editor>();
@@ -182,7 +176,7 @@ public class EditorDAO  implements Serializable {
 
         System.out.println();
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -218,7 +212,7 @@ public class EditorDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + statut + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.isBeforeFirst()) {
@@ -244,17 +238,17 @@ public class EditorDAO  implements Serializable {
         return editorList;
     }
 
-     
     public Editor find(int id) {
-       Editor editor = null;
+        Editor editor = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FORM " + TABLE + " WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
-                .append(" = ")
-                .append(id);
+                .append(" = ?");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setInt(1, id);
+            
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -267,21 +261,17 @@ public class EditorDAO  implements Serializable {
                     editor.setEdiStatusCode(rs.getInt(STATUS));
                 }
             } else {
-                throw new SQLException("ResultSet was empty");
+                throw new SQLException("ResultSet was empty in Editor DAO find(id)");
             }
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
         }
         return editor;
     }
 
-     
     public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-     
     public Vector findByColumn(String column, String term) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

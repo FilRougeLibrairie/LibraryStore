@@ -1,8 +1,6 @@
-
 package accessBD;
 
-
-import names.SQLNames.ReviewNames;
+//import names.SQLNames.ReviewNames;
 import entity.Customer;
 import entity.OrderLine;
 import entity.Review;
@@ -14,21 +12,22 @@ import java.sql.SQLException;
 import java.util.Vector;
 import javax.naming.NamingException;
 
-
-public class ReviewDAO  implements Serializable {
+public class ReviewDAO implements Serializable {
 
     private MyConnexion mc;
     private final String TABLE = "Review";
 
-    private final String ID = ReviewNames.ID;
-    private final String CUSTOMER_ID = ReviewNames.CUSTOMER_ID;
-    private final String BOOK_ISBN_13 = ReviewNames.BOOK_ISBN_13;
-    private final String ORDERLINE_ID = ReviewNames.ORDERLINE_ID;
-    private final String NOTE = ReviewNames.NOTE;
-    private final String COMMENT = ReviewNames.COMMENT;
-    private final String DATE = ReviewNames.DATE;
-    private final String IP = ReviewNames.IP;
-    private final String STATUS = ReviewNames.STATUS;
+    private final String ID = "revId";
+    private final String CUSTOMER_ID = "cusId";
+    private final String BOOK_ISBN_13 = "booIsbn13";
+    private final String ORDERLINE_ID = "ordLineId";
+    private final String NOTE = "revNote";
+    private final String COMMENT = "revComment";
+    private final String DATE = "revDate";
+    private final String IP = "revIP";
+    private final String STATUS = "revStatus";
+    
+    private final int REVIEW_STATUS_PUBLISHED = 3;
 
     private String COLUMNS_CREATE = CUSTOMER_ID + ", " + BOOK_ISBN_13 + ", " + ORDERLINE_ID + ", "
             + NOTE + ", " + COMMENT + ", " + DATE + ", " + IP + ", "
@@ -36,17 +35,16 @@ public class ReviewDAO  implements Serializable {
 
     //Constructor
     public ReviewDAO() throws NamingException {
-         mc= new MyConnexion();
+        mc = new MyConnexion();
     }
 
-     
     public void create(Review obj) {
         Review rev = (Review) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + rev.getRevId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query);) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query);) {
 
             pstmt.setInt(1, rev.getCusId().getCusID());
             pstmt.setString(2, rev.getBooIsbn13());
@@ -61,13 +59,12 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            
+
         }
     }
 
-     
-    public void update(Review obj) {
-        Review rev = (Review) obj;
+    public void update(Review review) {
+        Review rev = review;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(CUSTOMER_ID).append(" = ?, ");
         query.append(BOOK_ISBN_13).append(" = ?, ");
@@ -81,9 +78,7 @@ public class ReviewDAO  implements Serializable {
         query.append("WHERE " + ID + " = ")
                 .append(rev.getRevId());
 
-        
-        
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             pstmt.setInt(1, rev.getCusId().getCusID());
             pstmt.setString(2, rev.getBooIsbn13());
@@ -98,12 +93,10 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            
 
         }
     }
 
-     
     public void delete(Review obj) {
         int revId = ((Review) obj).getRevId();
         StringBuffer query = new StringBuffer();
@@ -112,15 +105,14 @@ public class ReviewDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + revId + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+
         }
     }
 
-     
     public Review find(int id) {
         Review review = null;
         Customer cus = null;
@@ -131,7 +123,7 @@ public class ReviewDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + id + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -159,13 +151,11 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return review;
     }
 
-     
     public Vector<Review> findAll() {
         Vector<Review> reviewList = new Vector<Review>();
         Review review = null;
@@ -173,7 +163,7 @@ public class ReviewDAO  implements Serializable {
         OrderLine ord = null;
         String query = "SELECT * FROM " + TABLE;
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query)) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query)) {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.isBeforeFirst()) {
@@ -201,18 +191,15 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return reviewList;
     }
 
-     
     public Review find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-     
     public Vector<Review> findByColumn(String column, String term) {
         Vector<Review> reviewList = new Vector<Review>();
         Review review = null;
@@ -224,7 +211,7 @@ public class ReviewDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -252,22 +239,20 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return reviewList;
     }
-    
-    
-    public int countReviewsByStatus(int statusCode){
+
+    public int countReviewsByStatus(int statusCode) {
         int numberOfReviews = 0;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT " + ReviewNames.STATUS + " FROM Review WHERE " + ReviewNames.STATUS + " = ?");
-        
-         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        query.append("SELECT " + STATUS + " FROM Review WHERE " + STATUS + " = ?");
 
-             pstmt.setInt(1, statusCode);
-             
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, statusCode);
+
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -281,15 +266,11 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return numberOfReviews;
     }
-    
-    
-    
-    
+
     public Vector<Review> findByIsbn(String term) {
         Vector<Review> reviewList = new Vector<Review>();
         Review review = null;
@@ -301,7 +282,7 @@ public class ReviewDAO  implements Serializable {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -330,14 +311,12 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return reviewList;
     }
-    
-    
-        public Vector<Review> findByCustomer(String term) {
+
+    public Vector<Review> findByCustomer(int customerId) {
         Vector<Review> reviewList = new Vector<Review>();
         Review review = null;
         Customer cus = null;
@@ -345,10 +324,11 @@ public class ReviewDAO  implements Serializable {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append("cusId")
-                .append(" = ")
-                .append("'" + term + "'");
+                .append(" = ?");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, customerId);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -377,19 +357,10 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return reviewList;
     }
-    
-    
-    
-    
-    
-    
-    
-    
 
     public Vector<Review> findByColumn(String column, int term) {
         Vector<Review> reviewList = new Vector<Review>();
@@ -402,10 +373,10 @@ public class ReviewDAO  implements Serializable {
                 .append(" = ")
                 .append("?");
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             pstmt.setInt(1, term);
-            
+
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -448,7 +419,7 @@ public class ReviewDAO  implements Serializable {
                 .append(" = ")
                 .append(term);
 
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -477,10 +448,52 @@ public class ReviewDAO  implements Serializable {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return reviewList;
+    }
+
+    public Review findReview(int customerId, String isbn) {
+        Review review = null;
+        Customer cus = null;
+        OrderLine ord = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE cusId = ? AND booIsbn13 = ? AND rev.revStatus = " + REVIEW_STATUS_PUBLISHED);
+
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, customerId);
+            pstmt.setString(2, isbn);
+            
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    review = new Review();
+                    review.setRevId(rs.getInt(ID));
+                    cus = new Customer();
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    review.setCusId(cus);
+                    review.setBooIsbn13(rs.getString(BOOK_ISBN_13));
+                    ord = new OrderLine();
+                    ord.setOrdLineId(rs.getInt(ORDERLINE_ID));
+                    review.setOrdLineId(ord);
+                    review.setRevNote(rs.getFloat(NOTE));
+                    review.setRevComment(rs.getString(COMMENT));
+                    review.setRevDate(rs.getString(DATE));
+                    review.setRevIP(rs.getString(IP));
+                    review.setRevStatus(rs.getInt(STATUS));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+
+        }
+        return review;
     }
 
 }

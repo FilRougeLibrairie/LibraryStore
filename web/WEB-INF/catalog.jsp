@@ -8,67 +8,115 @@
 <%-- navigator --%>
 <%@include file="includes/navigator.jsp" %>
 
+<c:url value="ControllerMain?section=bookGeneral" var="url125" />
 
 
-<%-- body --%>
 
-<div class="row">
+<%@include file="includes/menuLeft.jsp" %>
 
-    <div class="leftSection col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
-        <ul>
-            <li><a href="${url02}">Tout le catalogue </a></li>
-            <li><a href="#">Prix </a>  </li>
-            <li><a href="#">Notes </a></li>
-            <li><a href="#">Date de parution </a></li>
 
-        </ul>
+<div class="centralSection col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
+
+    <div class="col-lg-12">
+
+        <c:forEach items="${listeBook}" var="p">
+        
+            <div class=" cover col-lg-4">
+
+
+
+                <c:choose>
+
+                    <c:when test="${p.getDiscount()==null}">
+                        <div class="elementCatalog">   
+                            <a class="blocCatalog" href="${url125}&booId=${p.getBookIsbn()}"> <img src="${p.getImageURL()}" alt="cover"/> </a>
+                        </div>
+                        <div class="elementCatalog" style="font-weight: bold;"> ${p.getBookTitle()}</div>
+                        
+                        
+                        <div class="elementCatalog"> ${p.getListAuthors()}</div>
+                        
+                        
+                        
+                        <div class="elementCatalog"> ${p.getPriceTTC()} EUR TTC </div>
+                    </c:when>
+
+
+                    <c:when test="${p.getDiscount()==0}">
+                        <div class="elementCatalog">   
+                            <a class="blocCatalog" href="${url125}&booId=${p.getBookIsbn()}"> <img src="${p.getImageURL()}" alt="cover"/> </a>
+                        </div>
+                        <div class="elementCatalog" style="font-weight: bold;"> ${p.getBookTitle()}</div>
+                        <div class="elementCatalog"> ${p.getListAuthors()}</div>
+                        <div class="elementCatalog"> ${p.getPriceTTC()} EUR TTC</div>
+                    </c:when>
+
+
+                    <c:when test="${p.getDiscount()!=null}"> 
+                        <div class="elementCatalog">   
+                            <a class="blocCatalog" href="${url125}&booId=${p.getBookIsbn()}"> 
+                                <img class="imgDiscount" src="image/specialOffer.png" alt="cover"> <img src="${p.getImageURL()}" alt="cover"/> 
+                                </img>
+
+                            </a>
+                        </div>
+                        <div class="elementCatalog" style="font-weight: bold;"> ${p.getBookTitle()}</div>
+                        <div class="elementCatalog"> ${p.getListAuthors()}</div>
+                        <div class=" elementCatalog row">
+                            <div class="elementPriceOld col-lg-6">${p.getPriceTTC()} EUR TTC</div>
+                            <div class="elementPrice col-lg-6"> ${p.getPriceTTCWithoutDiscount()} EUR TTC </div>
+                        </div>
+                    </c:when>
+
+                </c:choose>
+
+
+                         <c:choose>
+
+                    <c:when test="${p.getBooQuantity()<1}">
+
+                <div class="boutonOrder"><span class="zocial cart indisponible">Indisponible</span></div>   
+
+                    </c:when>
+
+                <c:when test="${p.getBooQuantity()>=1}">
+
+                <div class="boutonOrder"><a href="ControllerMain?item=${p.bookIsbn}&action=add&section=${currentSection}&page=${page}" class=" zocial cart">Commander</a></div>   
+
+                    </c:when>
+                </c:choose>
+
+            </div>     
+        </c:forEach>
     </div>
-    <div class="centralSection col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+
+  
+    
+
 
         <div class="col-lg-12">
-            <c:forEach items="${keys}" var="c">
-                <c:forEach items="${listeBook.get(c)}" var="p">
-                    <div class="cover col-lg-4">
-                        <img src="${p.getBooFrontCover()}" alt="cover"/>
-                        <div> ${p.getBooTitle()}</div>
-                        <div> ${p.getAuthorList()}</div>
-                        <div> ${p.getAuthorList()}</div>
-                        <div> ${p.getBooPriceHT()}</div>
-                        <div><a href="#" class="zocial cart">Commander</a></div>   
-                    </div>     
-                </c:forEach>
-            </c:forEach>
-         <div >
+         <nav class="paginat"aria-label="Page navigation example">
+                <ul class="pagination">
+                 
+              
+                 
+                 
+                 <c:forEach items="${nbrePages}" var="nb">
+                 <li class="page-item"><a class="page-link" href="ControllerMain?section=${currentSection}&page=${nb}">${nb}</a></li>
+                 </c:forEach>
+                 
+                 
+                 
+                 
+                 
+                </ul>
+            </nav>
+     </div>
 
-
-             <div class="col-lg-12">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Précédent</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Suivant</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-             </div>
-
-
-
-
-            </div>
         </div>
 
-        <%-- footer --%>
-        <%@include file="includes/footer.jsp" %>
 
+
+    <%-- footer --%>
+    <%@include file="includes/footer.jsp" %>

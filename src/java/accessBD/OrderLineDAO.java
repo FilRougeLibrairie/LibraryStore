@@ -1,7 +1,8 @@
 package accessBD;
 
 
-import names.SQLNames.OrderLineNames;
+//import names.SQLNames.OrderLineNames;
+
 import entity.Book;
 import entity.OrderLine;
 import entity.Purchase;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Vector;
 import javax.naming.NamingException;
 
@@ -17,14 +19,15 @@ import javax.naming.NamingException;
 public class OrderLineDAO  implements Serializable {
 
     private MyConnexion mc;
+    
     private final String TABLE = "OrderLine";
 
-    private final String ID = OrderLineNames.ID;
-    private final String PURCHASE_ID = OrderLineNames.PURCHASE_ID;
-    private final String BOOK_ISBN_13 = OrderLineNames.BOOK_ISBN_13;
-    private final String QUANTITY = OrderLineNames.QUANTITY;
-    private final String PRICE_HT = OrderLineNames.PRICE_HT;
-    private final String VAT = OrderLineNames.VAT;
+    private final String ID = "ordLineId";
+    private final String PURCHASE_ID = "purId";
+    private final String BOOK_ISBN_13 = "booIsbn13";
+    private final String QUANTITY = "ordLineQuantity";
+    private final String PRICE_HT = "ordBookPriceHT";
+    private final String VAT = "ordBookVAT";
 
     Vector<OrderLine> orderLineList;
     OrderLine ordLine;
@@ -53,6 +56,9 @@ public class OrderLineDAO  implements Serializable {
             pstmt.setFloat(5, ordLine.getOrdBookVAT());
 
             int result = pstmt.executeUpdate();
+            if(result == 0){
+                throw new SQLException("Error saving orderline : Purchase id " + ordLine.getPurId().getPurId() + "/ ISBN : " + ordLine.getBooIsbn13().getBooIsbn13());
+            }
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
@@ -195,20 +201,19 @@ public class OrderLineDAO  implements Serializable {
     }
 
      
-    public Vector findByColumn(String column, String term) {
+    public Collection<OrderLine> findByColumn(String column, String term) {
         orderLineList = new Vector<OrderLine>();
         pur = null;
         ordLine = null;
         book = null;
 
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
+        query.append("SELECT * FROM " + TABLE + " WHERE " + column + " = ?");
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setString(1, term);
+            
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -232,36 +237,36 @@ public class OrderLineDAO  implements Serializable {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            System.out.println("ERROR Retrieving Object [findByColumn(String, String)] : " + ex.getMessage());
             
 
         }
         return orderLineList;
     }
     
-    public Vector findByColumn(String column, int term) {
+    public Collection<OrderLine> findByColumn(String column, int number) {
         orderLineList = new Vector<OrderLine>();
         pur = null;
         ordLine = null;
         book = null;
 
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(column)
-                .append(" = ")
-                .append(term);
+        query.append("SELECT * FROM " + TABLE + " WHERE " + column + " = ?");
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setInt(1, number);
+            
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.isBeforeFirst()) {
+          //  if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
                     ordLine = new OrderLine();
                     pur = new Purchase();
                     book = new Book();
 
+                    
                     ordLine.setOrdLineId(rs.getInt(ID));
                     pur.setPurId(rs.getInt(PURCHASE_ID));
                     ordLine.setPurId(pur);
@@ -272,12 +277,12 @@ public class OrderLineDAO  implements Serializable {
                     ordLine.setOrdBookPriceHT(rs.getFloat(PRICE_HT));
                     orderLineList.add(ordLine);
                 }
-            } else {
-                throw new SQLException("ResultSet was empty");
-            }
+        //    } else {
+         //       throw new SQLException("ResultSet was empty");
+        //    }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            System.out.println("ERROR Retrieving Object [findByColumn(String, int)] : " + ex.getMessage());
             
 
         }

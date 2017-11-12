@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import names.SQLNames.FormatsNames;
+//import names.SQLNames.FormatsNames;
 import entity.Forma;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -17,9 +17,9 @@ public class FormatsDAO  implements Serializable{
     
     private MyConnexion mc;
     private final String TABLE = "Formats";
-    private final String ID = FormatsNames.ID;
-    private final String FORNAME = FormatsNames.NAME;
-    private final String STATUS = FormatsNames.STATUS;
+    private final String ID = "forId";
+    private final String FORNAME = "forName";
+    private final String STATUS = "forStatus";
     
     private String COLUMNS_CREATE = FORNAME + ", " + STATUS;
     
@@ -144,8 +144,8 @@ public class FormatsDAO  implements Serializable{
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
                     form = new Forma();
-                    form.setForId(rs.getInt(FormatsNames.ID));
-                    form.setForName(rs.getString(FormatsNames.NAME));
+                    form.setForId(rs.getInt("forId"));
+                    form.setForName(rs.getString("forName"));
                     
                 }
             } else {

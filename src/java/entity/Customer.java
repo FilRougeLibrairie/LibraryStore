@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -21,18 +22,29 @@ public class Customer {
     private String cusOrganisationName;
     private String cusEmail;
     private String cusPhoneNumber;
-    private java.sql.Date cusDateOfBirth;
+    private String cusDateOfBirth;
     private String cusPassword;
     private String cusSalt;
     private String cusIP;
     private int cusStatus;
     private String cusComment;
+    private String cusClearPassword;
 
     //Constructor
     public Customer() {
     }
 
     //Setters
+
+    public void setCusDateOfBirth(String cusDateOfBirth) {
+        this.cusDateOfBirth = cusDateOfBirth;
+    }
+
+    public void setCusClearPassword(String cusClearPassword) {
+        this.cusClearPassword = cusClearPassword;
+    }
+    
+    
     public void setCusID(int cusID) {
         this.cusID = cusID;
     }
@@ -69,16 +81,7 @@ public class Customer {
         this.cusPhoneNumber = cusPhoneNumber;
     }
 
-    public void setCusDateOfBirth(String cusDateOfBirth) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            java.util.Date birthday = sdf.parse(cusDateOfBirth);
-            java.sql.Date sqlBirth = new java.sql.Date(birthday.getTime());
-            this.cusDateOfBirth = sqlBirth;
-        } catch (ParseException ex) {
-            System.out.println("Error formating DATE" + ex.getMessage());
-        }
-    }
+    
 
     public void setCusPassword(String cusPassword) {
         this.cusPassword = cusPassword;
@@ -105,6 +108,12 @@ public class Customer {
     }
 
     //Getters
+
+    public String getCusClearPassword() {
+        return cusClearPassword;
+    }
+    
+    
     public int getCusID() {
         return cusID;
     }
@@ -133,8 +142,8 @@ public class Customer {
         return cusPhoneNumber;
     }
 
-    public java.sql.Date getCusDateOfBirth() {
-        return new java.sql.Date((cusDateOfBirth.getTime()));
+    public String getCusDateOfBirth() {
+        return cusDateOfBirth;
     }
 
     public String getCusPassword() {

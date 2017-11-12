@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import names.SQLNames.ShippingCostNames;
+
 import entity.ShippingCost;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -16,20 +16,19 @@ import javax.naming.NamingException;
 public class ShippingCostDAO  implements Serializable {
 
     private MyConnexion mc;
-    private final String TABLE = "ShippingCost";
-    private final String ID = ShippingCostNames.ID;
-    private final String NAME = ShippingCostNames.NAME;
-    private final String COST = ShippingCostNames.COST;
-
-    private String COLUMNS_CREATE = ID + ", " + NAME + ", " + COST;
-
-    //Constructor
+     
+   
     public ShippingCostDAO() throws NamingException{
          mc= new MyConnexion();
     }
 
      
     public void create(ShippingCost obj) {
+        
+        String COLUMNS_CREATE = "shipId,shipName,shipCost";
+        String TABLE = "ShippingCost";
+        String ID = "shipId";
+        
         ShippingCost shipcost = (ShippingCost) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + shipcost.getShipId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
@@ -50,6 +49,11 @@ public class ShippingCostDAO  implements Serializable {
 
      
     public void update(ShippingCost obj) {
+        String TABLE = "ShippingCost";
+        String ID = "shipId";
+        String NAME = "shipName";
+        String COST = "shipCost";
+        
         ShippingCost shipcost = (ShippingCost) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(NAME).append(" = ?, ");
@@ -74,27 +78,19 @@ public class ShippingCostDAO  implements Serializable {
     }
 
      
-    public void delete(ShippingCost obj) {
-        int shipcostId = ((ShippingCost) obj).getShipId();
-        StringBuffer query = new StringBuffer();
-        query.append("DELETE FROM " + TABLE + " WHERE ")
-                .append(ID)
-                .append(" = ")
-                .append("'" + shipcostId + "'");
-
-        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
-            pstmt.executeQuery();
-        } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
-        }
-    }
+    
 
      
     public Vector<ShippingCost> findAll() {
+        String TABLE = "ShippingCost";
+        String ID = "shipId";
+        String NAME = "shipName";
+        String COST = "shipCost";
+        
+        
         Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
         ShippingCost shipcost = null;
-        String query = "SELECT * FROM " + TABLE + " ORDER BY " + ShippingCostNames.COST;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + "shipCost";
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query)) {
 
@@ -122,6 +118,13 @@ public class ShippingCostDAO  implements Serializable {
 
      
     public Vector<ShippingCost> findByColumn(String column, String term) {
+        
+        String TABLE = "ShippingCost";
+        String ID = "shipId";
+        String NAME = "shipName";
+        String COST = "shipCost";
+        
+        
         Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
         ShippingCost shipcost = null;
         StringBuffer query = new StringBuffer();
@@ -158,6 +161,12 @@ public class ShippingCostDAO  implements Serializable {
 
      
     public ShippingCost find(int id) {
+        
+        String TABLE = "ShippingCost";
+        String ID = "shipId";
+        String NAME = "shipName";
+        String COST = "shipCost";
+        
         ShippingCost shipcost = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")

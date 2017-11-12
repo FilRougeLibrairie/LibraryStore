@@ -2,13 +2,14 @@
 package accessBD;
 
 
-import names.SQLNames.ThemeNames;
 import entity.Theme;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.naming.NamingException;
 
@@ -18,10 +19,10 @@ public class ThemeDAO  implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "Theme";
 
-    public final String ID = ThemeNames.ID;
-    public final String NAME = ThemeNames.NAME;
-    public final String DESCRIPTION = ThemeNames.DESCRIPTION;
-    public final String STATUS = ThemeNames.DESCRIPTION;
+    public final String ID = "theId";
+    public final String NAME = "theName";
+    public final String DESCRIPTION = "theDescription";
+    public final String STATUS = "theStatus";
     
     
     private String COLUMNS_CREATE = NAME + ", " + DESCRIPTION;
@@ -164,9 +165,9 @@ public class ThemeDAO  implements Serializable {
 
                 while (rs.next()) {
                     theme= new Theme();
-                    theme.setTheId(rs.getInt(ThemeNames.ID));
-                    theme.setTheName(rs.getString(ThemeNames.NAME));
-                    theme.setTheDescription(rs.getString(ThemeNames.DESCRIPTION));
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
                     //vecThemeList.add(theme);
                 }
             } else {
@@ -437,15 +438,28 @@ public class ThemeDAO  implements Serializable {
         return themeList;
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public List<Theme> listeDesThemes() throws SQLException {
+        List<Theme> listeThemes = new ArrayList();
+
+        Theme theme = null;
+
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + NAME;
+
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                theme = new Theme();
+                theme.setTheId(rs.getInt(ID));
+                theme.setTheName(rs.getString(NAME));
+                theme.setTheDescription(rs.getString(DESCRIPTION));
+                theme.setStatus(rs.getInt(STATUS));
+                listeThemes.add(theme);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return listeThemes;
+    }
 }

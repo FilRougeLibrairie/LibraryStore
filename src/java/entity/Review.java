@@ -138,21 +138,6 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review : " + revId + "\n"
-                + "Customer Id : " + customer + "\n"
-                + "ISBN13 : " + booIsbn13 + "\n"
-                + "Orderline Id : " + orderLine + "\n"
-                + "Score : " + revNote + "\n"
-                + "Comment : " + revComment + "\n"
-                + "Date : " + revDate + "\n"
-                + "IP adress : " + revIP + "\n"
-                + "Review Status : " + revStatus;
-    }
-    
-    
-
-
-    
-    
-    
+        return revComment;
+    }   
 }

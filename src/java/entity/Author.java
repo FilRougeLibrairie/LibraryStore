@@ -130,7 +130,7 @@ public class Author {
 
     @Override
     public String toString() {
-        return autLastName + " " +  autFirstName ;
+        return autFirstName + " " + autLastName;
     }
     
     

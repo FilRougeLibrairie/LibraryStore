@@ -1,75 +1,76 @@
-
 package process;
 
+import accessBD.AuthorDAO;
 import accessBD.BookDAO;
-import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
+import accessBD.BookLanguageDAO;
+import accessBD.EditorDAO;
+import accessBD.FormatsDAO;
+import accessBD.OfferDAO;
+import accessBD.SubThemeDAO;
+import accessBD.ThemeDAO;
+import accessBD.VatDAO;
 import entity.Book;
+import entity.SubTheme;
+import entity.Theme;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import javax.naming.NamingException;
 
+public class GestionLivre implements Serializable {
 
-public class GestionLivre implements Serializable{
-    
     private BookDAO bookDAO;
-    
-    private List<String> clefs;
+    private ThemeDAO themeDAO;
+    private SubThemeDAO subThemeDAO;
+    private VatDAO vatDAO;
+    private AuthorDAO authorDAO;
+    private EditorDAO editorDAO;
+    private BookLanguageDAO bookLanguageDAO;
+    private FormatsDAO formatsDAO;
+    private OfferDAO offerDAO;
+           
 
-    
     public GestionLivre() throws NamingException {
         bookDAO = new BookDAO();
-        clefs = new ArrayList<>();
-        // attention jeux de test en dur - c'est pas bien -
-        clefs.add("A-B");
-        clefs.add("C");
-        clefs.add("D-F");
-        clefs.add("G-K");
-        clefs.add("L-N");
-        clefs.add("O-R");
-        clefs.add("S-V");
-        clefs.add("W-Z");
+        themeDAO = new ThemeDAO();
+        subThemeDAO = new SubThemeDAO();
+        vatDAO = new VatDAO();
+        authorDAO = new AuthorDAO();
+        editorDAO = new EditorDAO();
+        bookLanguageDAO = new BookLanguageDAO();
+        formatsDAO = new FormatsDAO();
+        offerDAO = new OfferDAO();
     }
-     
-    
-     public HashMap<String, List<Book>> findBook() throws SQLException{
-        List<Book> lp = bookDAO.findAll();
-        HashMap<String, List<Book>> mp = new HashMap<>();
-        for(String s : clefs){
-            List<Book> lcp = new ArrayList<>();
-            mp.put(s, lcp);
+
+    public Collection<Book> pageTousLivres() throws SQLException {
+        return bookDAO.rechercheTousLivres();
+    }
+
+
+    public List<Theme> rechercheParTheme() throws SQLException {
+
+        List<Theme> theme = themeDAO.listeDesThemes();
+
+        return theme;
+    }
+
+    public List<SubTheme> rechercheParSousTheme(int themeId) throws SQLException {
+
+        return subThemeDAO.listeDesSousThemes(themeId);
+
+    }
+
+    public List<Book> findBookBySubTheme(int subId) throws SQLException {
+
+        List<String> listeISBN = subThemeDAO.rechercheBookBySubTheme(subId);
+        List<Book> listeBook = new ArrayList<>();
+        for (String isbn : listeISBN) {
+            Book book = bookDAO.find(isbn);
+            listeBook.add(book);
         }
-        for(Book p : lp){
-            String nom = p.getBooTitle().charAt(0)+"";
-            nom = nom.toUpperCase();
-            for(String cle : clefs){
-                String regex = "["+cle+"]";
-                if(nom.matches(regex)){
-                    mp.get(cle).add(p);
-                }
-            }
-        }
-        return mp;
+        return listeBook;
     }
-    
-     
-       public HashMap<String, List<Book>> bookPage() throws SQLException {
-        
-        List<Book> listBook = bookDAO.find();
-        HashMap<String, List<Book>> hMapBook = new HashMap<>();
-      
-        for (Book b : listBook) {
-            String titre = b.getBooTitle();         
-        }
-        return hMapBook;
-    }
-         
-    public List<String> getClefs(){
-        return clefs;
-    }
-    
-    
-    
+
 }

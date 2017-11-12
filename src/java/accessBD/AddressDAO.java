@@ -1,8 +1,6 @@
 
 package accessBD;
 
-
-import names.SQLNames.AddressNames;
 import entity.Address;
 import entity.Customer;
 import java.io.Serializable;
@@ -19,21 +17,21 @@ public class AddressDAO implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "Address";
 
-    private final String ID = AddressNames.ID;
-    private final String CUST_RESIDENCE_ID = AddressNames.CUST_RESIDENCE_ID;
-    private final String CUST_CHARGE_ID = AddressNames.CUST_CHARGE_ID;
-    private final String LABEL = AddressNames.LABEL;
-    private final String FIRST_NAME = AddressNames.FIRST_NAME;
-    private final String LAST_NAME = AddressNames.LAST_NAME;
-    private final String COMPANY = AddressNames.COMPANY;
-    private final String STREET_NUMBER = AddressNames.STREET_NUMBER;
-    private final String STREET_TYPE = AddressNames.STREET_TYPE;
-    private final String STREET_NAME = AddressNames.STREET_NAME;
-    private final String COMPLEMENT = AddressNames.COMPLEMENT;
-    private final String ZIP_CODE = AddressNames.ZIP_CODE;
-    private final String CITY = AddressNames.CITY;
-    private final String SECURITY_CODE = AddressNames.SECURITY_CODE;
-    private final String PHONE = AddressNames.PHONE;
+    private final String ID = "addId";
+    private final String CUST_RESIDENCE_ID = "cusResidId";
+    private final String CUST_CHARGE_ID = "cusChargeId";
+    private final String LABEL = "addLabel";
+    private final String FIRST_NAME = "addFirstName";
+    private final String LAST_NAME = "addLastName";
+    private final String COMPANY = "addCompany";
+    private final String STREET_NUMBER = "addNumber";
+    private final String STREET_TYPE = "addStreetType";
+    private final String STREET_NAME = "addStreetName";
+    private final String COMPLEMENT = "addComplement";
+    private final String ZIP_CODE = "addZipCode";
+    private final String CITY = "addCity";
+    private final String SECURITY_CODE = "addSecurityCode";
+    private final String PHONE = "addPhone";
 
     private String COLUMNS_CREATE = CUST_RESIDENCE_ID + ", " + CUST_CHARGE_ID + ", "
             + LABEL + ", " + FIRST_NAME + ", " + LAST_NAME + ", " + COMPANY + ", "
@@ -297,11 +295,12 @@ public class AddressDAO implements Serializable {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(CUST_CHARGE_ID)
-                .append(" = ")
-                .append(customerId);
+                .append(" = ?");
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
 
+            pstmt.setInt(1, customerId);
+            
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {

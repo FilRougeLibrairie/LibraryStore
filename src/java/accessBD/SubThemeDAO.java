@@ -1,8 +1,7 @@
 package accessBD;
 
 
-import names.SQLNames.SubThemeNames;
-import static names.SQLNames.VATNames.CODE;
+
 import entity.Book;
 import entity.SubTheme;
 import entity.Theme;
@@ -11,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.naming.NamingException;
 
@@ -18,11 +19,11 @@ public class SubThemeDAO  implements Serializable {
 
     private MyConnexion mc;
     private final String TABLE = "SubTheme";
-    private final String ID = SubThemeNames.ID;
-    private final String THEME_ID = SubThemeNames.THEME_ID;
-    private final String NAME = SubThemeNames.NAME;
-    private final String DESCRIPTION = SubThemeNames.DESCRIPTION;
-    private final String STATUS = SubThemeNames.DESCRIPTION;
+    private final String ID = "subId";
+    private final String THEME_ID = "theId";
+    private final String NAME = "subName";
+    private final String DESCRIPTION = "subDescription";
+    private final String STATUS = "subStatus";
 
     private String COLUMNS_CREATE = ID + ", " + THEME_ID + "' " + NAME + "' " + DESCRIPTION;
 
@@ -146,10 +147,10 @@ public class SubThemeDAO  implements Serializable {
 
                 while (rs.next()) {
                     sub = new SubTheme();
-                    sub.setSubId(rs.getInt(SubThemeNames.ID));
-                    sub.setSubName(rs.getString(SubThemeNames.NAME));
+                    sub.setSubId(rs.getInt(ID));
+                    sub.setSubName(rs.getString(NAME));
                     the = new Theme();
-                    the.setTheId(rs.getInt(SubThemeNames.THEME_ID));
+                    the.setTheId(rs.getInt(THEME_ID));
                     sub.setTheId(the);
                     sub.setSubStatus(rs.getInt(STATUS));
                     vecSubThemeList.add(sub);
@@ -196,10 +197,10 @@ public class SubThemeDAO  implements Serializable {
 
                 while (rs.next()) {
                     sub = new SubTheme();
-                    sub.setSubId(rs.getInt(SubThemeNames.ID));
-                    sub.setSubName(rs.getString(SubThemeNames.NAME));
+                    sub.setSubId(rs.getInt(ID));
+                    sub.setSubName(rs.getString(NAME));
                     the = new Theme();
-                    the.setTheId(rs.getInt(SubThemeNames.THEME_ID));
+                    the.setTheId(rs.getInt(THEME_ID));
                     sub.setTheId(the);
                     sub.setSubStatus(rs.getInt(STATUS));
                     vecSubThemeList.add(sub);
@@ -216,37 +217,7 @@ public class SubThemeDAO  implements Serializable {
         return vecSubThemeList;
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     
+
     public Vector<SubTheme> findAll() {
         Vector<SubTheme> subThemeList = new Vector<SubTheme>();
         SubTheme subThe = null;
@@ -360,16 +331,7 @@ public class SubThemeDAO  implements Serializable {
         }
         return subThemeList;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
     
     public Vector<SubTheme> findByColumnTheme(String column, int subtheme, String column2, int theme) throws NamingException {
         Vector<SubTheme> subThemeList = new Vector<SubTheme>();
@@ -416,34 +378,13 @@ public class SubThemeDAO  implements Serializable {
         }
         return subThemeList;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
-     
     public SubTheme find(int id) {
         SubTheme subThe = null;
         Theme the = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(CODE)
+                .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
 
@@ -537,5 +478,51 @@ public class SubThemeDAO  implements Serializable {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
 
         }
+    }
+    
+     public List<SubTheme> listeDesSousThemes(int themeId) throws SQLException {
+        List<SubTheme> listeSousThemes = new ArrayList<>();
+        SubTheme subTheme = null;
+
+        String query = "SELECT * FROM " + TABLE + " WHERE " + THEME_ID + " = " + themeId + " ORDER BY " + NAME;
+
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                subTheme = new SubTheme();
+                subTheme.setSubId(rs.getInt(ID));
+                subTheme.setSubName(rs.getString(NAME));
+                subTheme.setSubDescription(rs.getString(DESCRIPTION));
+                subTheme.setSubStatus(rs.getInt(STATUS));
+                listeSousThemes.add(subTheme);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return listeSousThemes;
+    }
+
+    public List<String> rechercheBookBySubTheme(int subId) throws SQLException {
+        List<String> listeISBN13 = new ArrayList<>();
+
+        String isbn = null;
+        String query = "SELECT * FROM Association WHERE subId = ? ";
+
+        try (Connection cnt = mc.getConnection(); PreparedStatement pstmt = cnt.prepareStatement(query)) {
+            pstmt.setInt(1, subId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                isbn = rs.getString("booIsbn13");
+                listeISBN13.add(isbn);
+                System.out.println(">>>>"+ isbn);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return listeISBN13;
     }
 }

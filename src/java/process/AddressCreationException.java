@@ -3,20 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package exception;
+package process;
 
 /**
  *
- * @author Chrys
+ * @author PC
  */
-public class MyException extends NullPointerException{
-    
-    
-    public MyException() {
+public class AddressCreationException extends Exception{
+
+    public AddressCreationException(String msg) {
+        super(msg);
     }
+ 
     
-    public MyException (String s) {
-        super(s);
-    }
     
 }

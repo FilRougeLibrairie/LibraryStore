@@ -18,6 +18,8 @@ public class InputsControls {
     private static final String BIRTHDAY_MASK = "^[0-3][0-9]\\/[0-1][0-9]\\/[1-2][0-9]{3}$";
     private static final String CB_VISA_MASTERCARD_MASK = "^[0-9]{15,19}$";
     private static final String CREDIT_CARD_SECURITY_NUMBER = "^[0-9]{3}$";
+    private static final String MONTH = "^[0-1][0-9]$";
+    private static final String YEAR = "^20[1-9][0-9]$";
 
     public static boolean isZipCodeOk(String zipCode) {
         if (!zipCode.isEmpty() && !(zipCode.matches(ZIPCODE_MASK))) {
@@ -75,6 +77,20 @@ public class InputsControls {
         }
     }
 
+    public static boolean isMonthOk(String month){
+        if (!(month.matches(MONTH))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     
+    public static boolean isYearOk(String year){
+        if (!(year.matches(YEAR))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 }

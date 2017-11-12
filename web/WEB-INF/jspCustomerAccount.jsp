@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%-- lien vers création de compte --%>
-<c:url value="ControllerMain?section=createAccount" var="url103" />
+
+
 
 <%-- header--%>
 <%@include file="includes/header.jsp" %>
@@ -10,46 +11,48 @@
 <%@include file="includes/navigator.jsp" %>
 
 
-
-
-
 <%-- body --%>
 
-<div class="monCompte">
-        <h1>connexion</h1>
+<div class="centralSection col-lg-offset-2 col-lg-8 col-lg-offset-2 ">
+    <div class="titleConnexion">connexion</div>
 
-        <div class="row">
-        <div class="bisous col-lg-6 " >
-        <form action="action">
-            <h3>Vous avez déjà un compte ?</h3>
+
+    <div class="connexionParagraph col-lg-6 " >
+        <form action="ControllerMain?connect" method="post" >
+            <h4>Vous avez déjà un compte ?</h4>
             <br>
             <br>
-            <label for="adresseMail">Adresse mail :</label> <input type="text" name="adresseMail" id="adresseMail" /><br>
-            <br>
-            <label for="motDePasse">Mot de passe :</label> <input type="text" name="motDePasse" id="motDePasse" /><br>
-            <br>
-            <input type="submit" value="Connexion" name="connect"/><br>
-        </form>
-        </div>
-        
-        
-        
-        <div bisous class="col-lg-6 ">
-        <form action="action">
-            <h3>Vous êtes un nouveau client ? </h3>
-            <br>
-            <br>
-            <p>
-                En créant un compte sur notre boutique, vous pourrez passer vos commandes plus rapidement, enregistrer plusieurs adresses de livraison,
-                consulter et suivre vos commandes,et pleins d'autres choses encore.
-            </p>
-            <br>
+            <div class="connexionInfo">
+                <label for="adresseMail">Adresse mail :</label> <input type="email" name="adresseMail" id="adresseMail" /><br>
+                <br>
+                <label for="motDePasse">Mot de passe :</label> <input type="password" name="motDePasse" id="motDePasse" /><br>
+                <br>  
+            </div>    
+                <div class="buttonConnexion"><a><input type="submit" value="Connexion" name="connexion" ></a></div>
             
-            <a href="${url103}"><input type="button" value="Créer un compte" name="createAccount" >   </input></a><br>
         </form>
-        </div>
-        </div>
+    </div>
+
+
+
+    <div  class="col-lg-6 connexionParagraph">
+
+        <h4>Vous êtes un nouveau client ? </h4>
+        <br>
+        <br>
+         <div class="connexionInfo">
+        <p class="connexionText">
+            En créant un compte sur notre boutique, vous pourrez passer vos commandes plus rapidement, enregistrer plusieurs adresses de livraison,
+            consulter et suivre vos commandes,et pleins d'autres choses encore.
+        </p>
+         </div>
+       
+        <c:url value="ControllerMain?section=createAccount" var="url300" /> 
+        <div class="buttonConnexion"><button><a href="${url300}">Créer un compte</a></button></div>
+
+    </div>
 </div>
-        
+
+
 <%-- footer --%>
 <%@include file="includes/footer.jsp" %>

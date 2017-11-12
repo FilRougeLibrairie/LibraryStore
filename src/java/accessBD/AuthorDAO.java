@@ -1,8 +1,5 @@
 package accessBD;
 
-
-import names.SQLNames.AuthorNames;
-import names.SQLNames.BookNames;
 import entity.Author;
 import entity.Book;
 import java.io.Serializable;
@@ -10,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Vector;
 import javax.naming.NamingException;
 
@@ -17,11 +15,11 @@ public class AuthorDAO  implements Serializable {
 
     private MyConnexion mc;
     private final String TABLE = "Author";
-    private final String ID = AuthorNames.ID;
-    private final String LAST_NAME = AuthorNames.LAST_NAME;
-    private final String FIRST_NAME = AuthorNames.FIRST_NAME;
-    private final String BIOGRAPHY = AuthorNames.BIOGRAPHY;
-    private final String STATUS_CODE = AuthorNames.STATUS_CODE;
+    private final String ID = "autId";
+    private final String LAST_NAME = "autLastName";
+    private final String FIRST_NAME = "autFirstName";
+    private final String BIOGRAPHY = "autBiography";
+    private final String STATUS_CODE = "autStatusCode";
 
     private String COLUMNS_CREATE = LAST_NAME + ", " + FIRST_NAME + ", " + BIOGRAPHY + ", "
             + STATUS_CODE;
@@ -182,7 +180,7 @@ public class AuthorDAO  implements Serializable {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    isbn = rs.getString(BookNames.ISBN_13);
+                    isbn = rs.getString("booIsbn13");
                     isbnList.add(isbn);
                 }
             } else {
@@ -220,9 +218,9 @@ public class AuthorDAO  implements Serializable {
 
                 while (rs.next()) {
                     author = new Author();
-                    author.setAutId(rs.getInt(AuthorNames.ID));
-                    author.setAutLastName(rs.getString(AuthorNames.LAST_NAME));
-                    author.setAutFirstName(rs.getString(AuthorNames.FIRST_NAME));
+                    author.setAutId(rs.getInt(ID));
+                    author.setAutLastName(rs.getString(LAST_NAME));
+                    author.setAutFirstName(rs.getString(FIRST_NAME));
                     vecAuthorList.add(author);
                 }
             } else {
@@ -275,7 +273,7 @@ public class AuthorDAO  implements Serializable {
     }
 
      
-    public Vector findAll() {
+    public Collection findAll() {
         Vector<Author> authorList = new Vector<Author>();
         Author author = null;
 
@@ -438,8 +436,8 @@ public class AuthorDAO  implements Serializable {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
-                .append(" = ")
-                .append("'" + term + "' ORDER BY autLastName");
+                .append(" LIKE ")
+                .append("'%" + term + "%'");
 
         System.out.println();
 
@@ -513,21 +511,5 @@ public class AuthorDAO  implements Serializable {
         }
         return authorList;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+     
 }

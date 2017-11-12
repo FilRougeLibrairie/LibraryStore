@@ -1,7 +1,7 @@
 package accessBD;
 
 
-import names.SQLNames.PurchaseNames;
+//import names.SQLNames.PurchaseNames;
 import entity.Address;
 import entity.Customer;
 import entity.Purchase;
@@ -20,15 +20,15 @@ public class PurchaseDAO  implements Serializable {
     private MyConnexion mc;
     private final String TABLE = "Purchase";
 
-    private final String ID = PurchaseNames.ID;
-    private final String CUSTOMER_ID = PurchaseNames.CUSTOMER_ID;
-    private final String SHIPPING_COST = PurchaseNames.SHIPPING_COST;
-    private final String ADDRESS_DELIVERY = PurchaseNames.ADDRESS_DELIVERY;
-    private final String ADDRESS_INVOICE = PurchaseNames.ADDRESS_INVOICE;
-    private final String IP = PurchaseNames.IP;
-    private final String SHIPPING_DATE = PurchaseNames.SHIPPING_DATE;
-    private final String SHIPPING_NUMBER = PurchaseNames.SHIPPING_NUMBER;
-    private final String INTERNAL_UUID = PurchaseNames.INTERNAL_UUID;
+    private final String ID = "purId";
+    private final String CUSTOMER_ID = "cusId";
+    private final String SHIPPING_COST = "shippingCostId";
+    private final String ADDRESS_DELIVERY = "addDeliveryId";
+    private final String ADDRESS_INVOICE = "addInvoiceId";
+    private final String IP = "purIP";
+    private final String SHIPPING_DATE = "shippingDate";
+    private final String SHIPPING_NUMBER = "shippingNumber";
+    private final String INTERNAL_UUID = "purInternalId";
 
     private String COLUMNS_CREATE = CUSTOMER_ID + ", " + SHIPPING_COST + ", "
             + ADDRESS_DELIVERY + ", " + ADDRESS_INVOICE + ", " + IP + ", " + SHIPPING_DATE + ", "
@@ -46,8 +46,8 @@ public class PurchaseDAO  implements Serializable {
     }
 
      
-    public void create(Object obj) {
-        Purchase pur = (Purchase) obj;
+    public void create(Purchase purchase) {
+        Purchase pur = purchase;
         String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -63,8 +63,6 @@ public class PurchaseDAO  implements Serializable {
             pstmt.setString(8, pur.getUuid());
 
             int result = pstmt.executeUpdate();
-            
-            System.out.println("Create result : " + result);
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
@@ -124,7 +122,7 @@ public class PurchaseDAO  implements Serializable {
      
     public Vector<Purchase> findAll() {
         purList = new Vector<Purchase>();
-        String query = "SELECT * FROM " + TABLE + " ORDER BY " + PurchaseNames.SHIPPING_DATE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + SHIPPING_DATE;
 
         try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query)) {
 
@@ -209,8 +207,30 @@ public class PurchaseDAO  implements Serializable {
     }
 
      
-    public Object find(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int findPurchaseIdByInternalUUId (String internalId) {
+        int purchaseId = -1;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT " + ID + " FROM " + TABLE + " WHERE " + INTERNAL_UUID + " = ?");
+
+        try (Connection cnt = mc.getConnection();PreparedStatement pstmt = cnt.prepareStatement(query.toString())) {
+            
+            pstmt.setString(1, internalId);
+            
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                rs.next();
+                    purchaseId = rs.getInt(ID);
+                
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return purchaseId;
     }
 
      
